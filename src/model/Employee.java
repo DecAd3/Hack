@@ -5,7 +5,7 @@ public class Employee {
     private int workStatus;
     private int healthyStatus;
 
-    public Employee(Sting number) {
+    public Employee(String number) {
         this.number = number;
         this.workStatus = STATUS_HOMING;
         this.healthyStatus = STATUS_HEALTHY;
