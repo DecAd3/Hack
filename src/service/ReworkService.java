@@ -79,6 +79,14 @@ public class ReworkService {
         logFile.flush();
     }
 
+    public LinkedBlockingQueue<WorkTask> getQueue() {
+        return queue;
+    }
+
+    public Company getCompany() {
+        return company;
+    }
+
     public void rework() throws IOException {
         // 随机指定某员工为感染者
         Random random = new Random();
