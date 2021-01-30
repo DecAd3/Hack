@@ -4,8 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import model.Employee;
+
 public abstract class Room {
-    protected String number;
+    protected int number;
+    protected int floor;
     protected int capacity;
     protected int useStatus;
     protected int useDuration;
@@ -18,7 +20,20 @@ public abstract class Room {
         this.useDuration = 0;
     }
 
-    public String getNumber() {
+    public Room(int floor, int number, int capacity) {
+        this.floor = floor;
+        this.number = number;
+        this.capacity = capacity;
+        this.employeeList = new ArrayList<>();
+        this.useStatus = STATUS_FREE;
+        this.useDuration = 0;
+    }
+
+    public int getFloor() {
+        return floor;
+    }
+
+    public int getNumber() {
         return number;
     }
 
