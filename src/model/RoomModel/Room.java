@@ -9,14 +9,14 @@ public abstract class Room {
     protected int number;
     protected int floor;
     protected int capacity;
-    protected int useStatus;
+    protected STATUS useStatus;
     protected int useDuration;
     protected List<Employee> employeeList;
 
     public Room() {
         this.capacity = Integer.MAX_VALUE;
         this.employeeList = new ArrayList<>();
-        this.useStatus = STATUS_FREE;
+        this.useStatus = STATUS.FREE;
         this.useDuration = 0;
     }
 
@@ -25,7 +25,7 @@ public abstract class Room {
         this.number = number;
         this.capacity = capacity;
         this.employeeList = new ArrayList<>();
-        this.useStatus = STATUS_FREE;
+        this.useStatus = STATUS.FREE;
         this.useDuration = 0;
     }
 
@@ -41,7 +41,7 @@ public abstract class Room {
         return capacity;
     }
 
-    public int getUseStatus() {
+    public STATUS getUseStatus() {
         return useStatus;
     }
 
@@ -53,7 +53,7 @@ public abstract class Room {
         return employeeList;
     }
 
-    public void setUseStatus(int useStatus) {
+    public void setUseStatus(STATUS useStatus) {
         this.useStatus = useStatus;
     }
 
@@ -66,10 +66,12 @@ public abstract class Room {
     }
 
     synchronized public void join(Employee e) {
-        this.useStatus = STATUS_IN_USE;
+        this.useStatus = STATUS.IN_USE;
         this.employeeList.add(e);
     }
 
-    public final static int STATUS_IN_USE = 1;
-    public final static int STATUS_FREE = 0;
+}
+
+enum STATUS {
+    IN_USE, FREE
 }
