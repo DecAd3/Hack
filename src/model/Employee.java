@@ -3,14 +3,14 @@ package model;
 public class Employee {
     private int number;
     private int floor;
-    private int workStatus;
-    private int healthyStatus;
+    private WORK_STATUS workStatus;
+    private HEALTHY_STATUS healthyStatus;
 
     public Employee(int floor, int number) {
         this.number = number;
         this.floor = floor;
-        this.workStatus = STATUS_HOMING;
-        this.healthyStatus = STATUS_HEALTHY;
+        this.workStatus = WORK_STATUS.HOMING;
+        this.healthyStatus = HEALTHY_STATUS.HEALTHY;
     }
 
     public int getNumber() {
@@ -21,19 +21,19 @@ public class Employee {
         return floor;
     }
 
-    public int getWorkStatus() {
+    public WORK_STATUS getWorkStatus() {
         return workStatus;
     }
 
-    public int getHealthyStatus() {
+    public HEALTHY_STATUS getHealthyStatus() {
         return healthyStatus;
     }
 
-    public void setWorkStatus(int workStatus) {
+    public void setWorkStatus(WORK_STATUS workStatus) {
         this.workStatus = workStatus;
     }
 
-    public void setHealthyStatus(int healthyStatus) {
+    public void setHealthyStatus(HEALTHY_STATUS healthyStatus) {
         this.healthyStatus = healthyStatus;
     }
 
@@ -42,17 +42,12 @@ public class Employee {
         return floor + " - " + number;
     }
 
-    // work status
-    public final static int STATUS_HOMING = 0;
-    public final static int STATUS_WORKING = 1;
-    public final static int STATUS_RESTING = 2;
-    public final static int STATUS_MEETING = 3;
-    public final static int STATUS_PEEING = 4;
-    public final static int STATUS_LIFTING = 5;
-    // healthy status
-    public final static int STATUS_HEALTHY = 0;
-    public final static int STATUS_RISKY = 1;
-    public final static int STATUS_INFECTED = 2;
-    public final static int STATUS_ISOLATED = 3;
+    public enum WORK_STATUS {
+        HOMING, WORKING, RESTING, MEETING, PEEING, LIFTING
+    }
+
+    public enum HEALTHY_STATUS {
+        HEALTHY, RISKY, INFECTED, ISOLATED
+    }
 
 }
