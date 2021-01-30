@@ -23,7 +23,7 @@ public class Constants {
     public final static int MEETINGROOM_EACH_FLOOR = 6;
     public final static int TOILET_EACH_FLOOR = 2;
     public final static int RESTROOM_EACH_FLOOR = 3;
-    public final static double FIND_OUT_POSSIBILITY = 0.4;
+    public final static double FIND_OUT_POSSIBILITY = 0.15;
     // 日志路径
     public final static String LOG_PATH = "../log.txt";
 }

@@ -24,6 +24,7 @@ public class MainPanel extends JPanel implements Runnable {
         private long WORLD_TIME = ReworkService.getInstance().getWorldTime();
 
         public void info() {
+                WORLD_TIME = ReworkService.getInstance().getWorldTime();
                 int OFFICEING_AMOUNT = company.getEmployeePool().stream()
                                 .filter(employee -> employee.getWorkStatus() == WORK_STATUS.WORKING)
                                 .collect(Collectors.toList()).size();
@@ -61,6 +62,7 @@ public class MainPanel extends JPanel implements Runnable {
 
         @Override
         public void paint(Graphics g) {
+                WORLD_TIME = ReworkService.getInstance().getWorldTime();
                 super.paint(g);
                 Map<String, Employee.HEALTHY_STATUS> employeeMap = company.getEmployeePool().stream()
                                 .collect(Collectors.toMap(Employee::toString, Employee::getHealthyStatus));

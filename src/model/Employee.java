@@ -19,7 +19,7 @@ public class Employee {
         return number;
     }
 
-    public int gettFloor() {
+    public int getFloor() {
         return floor;
     }
 

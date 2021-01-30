@@ -120,7 +120,7 @@ public class ReworkService {
             double d = Math.random();
             if (employee.getHealthyStatus() == HEALTHY_STATUS.INFECTED && d < FIND_OUT_POSSIBILITY) {
                 try {
-                    logFile.write(employee.getNumber() + " Employee is infected");
+                    logFile.write(employee.toString() + " Employee is infected");
                     logFile.write("\n");
                     logFile.flush();
                 } catch (IOException e) {
@@ -176,20 +176,19 @@ public class ReworkService {
             try {
                 for (int i = 0; i < list.size(); i++) {
                     list.get(i).setWorkStatus(WORK_STATUS.WORKING);
-                    employeeNum = employeeNum + list.get(i).getNumber() + ",";
+                    employeeNum = employeeNum + list.get(i).toString() + ",";
                 }
             } catch (Exception e) {
                 e.printStackTrace();
             }
             if (!"".equals(employeeNum)) {
-                logFile.write(employeeNum + "退出" + task.getActionRoom().getNumber() + "回到了工位");
+                logFile.write(employeeNum + "退出" + task.getActionRoom().toString() + "回到了工位");
                 logFile.write("\n");
                 logFile.flush();
             }
             task.getActionRoom().getEmployeeList().clear();
-            // task复位
-            // task.setActionRoom(company.getFloorList()
-            // .get(Integer.parseInt(task.getEmployee().getNumber().split("-")[0])).getOffice());
+
+            task.setActionRoom(company.getFloorList().get(task.getEmployee().getFloor()).getOffice());
             task.getEmployee().setWorkStatus(WORK_STATUS.WORKING);
         }
         task.getActionRoom().setUseDuration(task.getActionRoom().getUseDuration() + 1);
@@ -211,7 +210,7 @@ public class ReworkService {
                     && d <= (MEETING_POSSIBILITY + RESTING_POSSIBILITY + PEEING_POSSIBILITY + LIFTING_POSSIBILITY)) {
                 nextStatus = WORK_STATUS.LIFTING;
             }
-            Floor floor = company.getFloorList().get(e.getNumber());
+            Floor floor = company.getFloorList().get(e.getFloor());
 
             switch (nextStatus) {
                 case MEETING:
@@ -220,7 +219,7 @@ public class ReworkService {
                         freeMeetingRoom = company.getFreeMeetingRoomPool();
                         if (freeMeetingRoom == null) {
 
-                            return company.getFloorList().get(e.getNumber()).getOffice();
+                            return company.getFloorList().get(e.getFloor()).getOffice();
                         }
                     }
                     freeMeetingRoom.join(e);
@@ -230,7 +229,7 @@ public class ReworkService {
                     if (freeRestroom == null) {
                         freeRestroom = company.getFreeRestroomPool();
                         if (freeRestroom == null) {
-                            return company.getFloorList().get(e.getNumber()).getOffice();
+                            return company.getFloorList().get(e.getFloor()).getOffice();
                         }
                     }
                     freeRestroom.join(e);
@@ -240,7 +239,7 @@ public class ReworkService {
                     if (freeToilet == null) {
                         freeToilet = company.getFreeToiletPool();
                         if (freeToilet == null) {
-                            return company.getFloorList().get(e.getNumber()).getOffice();
+                            return company.getFloorList().get(e.getFloor()).getOffice();
                         }
                     }
                     freeToilet.join(e);
@@ -248,17 +247,17 @@ public class ReworkService {
                 case LIFTING:
                     Elevator freeElevator = company.getFreeElevator();
                     if (freeElevator == null) {
-                        return company.getFloorList().get(e.getNumber()).getOffice();
+                        return company.getFloorList().get(e.getFloor()).getOffice();
                     }
                     freeElevator.join(e);
                     return freeElevator;
                 default:
-                    return company.getFloorList().get(e.getNumber()).getOffice();
+                    return company.getFloorList().get(e.getFloor()).getOffice();
             }
         } else if (e.getWorkStatus() == WORK_STATUS.HOMING) {
 
             e.setWorkStatus(WORK_STATUS.WORKING);
-            return company.getFloorList().get(e.getNumber()).getOffice();
+            return company.getFloorList().get(e.getFloor()).getOffice();
         } else {
 
             return room;
@@ -276,7 +275,7 @@ public class ReworkService {
                 root = company.getEmployeePool().get(index);
             }
             root.setHealthyStatus(HEALTHY_STATUS.INFECTED);
-            logFile.write("The root is：" + root.getNumber() + " Employee");
+            logFile.write("The root is：" + root.toString() + " Employee");
             logFile.write("\n");
             logFile.flush();
         }
@@ -299,23 +298,23 @@ public class ReworkService {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            // tryReleaseRoom(task);
-            // task.doTask();
+            tryReleaseRoom(task);
+            task.doTask();
             taskAmount++;
             if (taskAmount % 1000 == 0) {
                 WORLD_TIME++;
                 if (WORLD_TIME % 48 == 0) {
                     info();
-                    // 加入检查机制
-                    // int healthyNum = checkAll();
+
+                    int healthyNum = checkAll();
                     try {
                         Thread.sleep(1000);
-                        // if (healthyNum == 0) {
-                        // logFile.write("全军覆没，耗时：" + WORLD_TIME % 48);
-                        // logFile.flush();
-                        // logHistoryclose();
-                        // Thread.sleep(10000000);
-                        // }
+                        if (healthyNum == 0) {
+                            logFile.write("ALL INFECTED, TIME：" + WORLD_TIME % 48);
+                            logFile.flush();
+
+                            Thread.sleep(10000000);
+                        }
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }

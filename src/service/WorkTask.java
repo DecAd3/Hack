@@ -46,7 +46,7 @@ public class WorkTask {
         Company company = Company.getInstance();
         LinkedBlockingQueue<WorkTask> queue = rework.getQueue();
         if (employee.getHealthyStatus() == HEALTHY_STATUS.ISOLATED) {
-            queue.add(new WorkTask(employee, company.getFloorList().get(employee.gettFloor()).getOffice()));
+            queue.add(new WorkTask(employee, company.getFloorList().get(employee.getFloor()).getOffice()));
             return;
         }
 
@@ -77,7 +77,7 @@ public class WorkTask {
         }
         BufferedWriter logFile = rework.getBufferWritter();
         if (!(actionRoom instanceof Office)) {
-            logFile.write(employee.getNumber() + "号员工在" + actionRoom.getNumber());
+            logFile.write(employee.toString() + "号员工在" + actionRoom.toString());
             logFile.write("\n");
             logFile.flush();
         }
@@ -89,14 +89,14 @@ public class WorkTask {
                     if (employeeList.get(i).getHealthyStatus() != HEALTHY_STATUS.INFECTED) {
                         if (d <= Constants.INFECT_POSSIBILITY) {
                             employeeList.get(i).setHealthyStatus(HEALTHY_STATUS.INFECTED);
-                            logFile.write(employeeList.get(i).getNumber() + "号员工被感染,感染源：" + employee.getNumber()
-                                    + ",地点：" + actionRoom.getNumber());
+                            logFile.write(employeeList.get(i).toString() + "号员工被感染,感染源：" + employee.toString() + ",地点："
+                                    + actionRoom.toString());
                             logFile.write("\n");
                             logFile.flush();
                         } else {
                             employeeList.get(i).setHealthyStatus(HEALTHY_STATUS.RISKY);
-                            logFile.write(employeeList.get(i).getNumber() + "号员工亲密接触过感染者，存在风险, 亲密接触感染者："
-                                    + employee.getNumber() + ",地点：" + actionRoom.getNumber());
+                            logFile.write(employeeList.get(i).toString() + "号员工亲密接触过感染者，存在风险, 亲密接触感染者："
+                                    + employee.toString() + ",地点：" + actionRoom.toString());
                             logFile.write("\n");
                             logFile.flush();
                         }
@@ -157,7 +157,7 @@ public class WorkTask {
                             + Constants.PEEING_POSSIBILITY + Constants.LIFTING_POSSIBILITY)) {
                 nextStatus = WORK_STATUS.LIFTING;
             }
-            Floor floor = company.getFloorList().get(e.gettFloor());
+            Floor floor = company.getFloorList().get(e.getFloor());
             // 除了电梯类型外，其他房间都优先选择本层
             switch (nextStatus) {
                 case MEETING:
@@ -166,7 +166,7 @@ public class WorkTask {
                         freeMeetingRoom = company.getFreeMeetingRoomPool();
                         if (freeMeetingRoom == null) {
                             // 无可用房间，返回办公区
-                            return company.getFloorList().get(e.gettFloor()).getOffice();
+                            return company.getFloorList().get(e.getFloor()).getOffice();
                         }
                     }
                     freeMeetingRoom.join(e);
@@ -176,7 +176,7 @@ public class WorkTask {
                     if (freeRestroom == null) {
                         freeRestroom = company.getFreeRestroomPool();
                         if (freeRestroom == null) {
-                            return company.getFloorList().get(e.gettFloor()).getOffice();
+                            return company.getFloorList().get(e.getFloor()).getOffice();
                         }
                     }
                     freeRestroom.join(e);
@@ -186,7 +186,7 @@ public class WorkTask {
                     if (freeToilet == null) {
                         freeToilet = company.getFreeToiletPool();
                         if (freeToilet == null) {
-                            return company.getFloorList().get(e.gettFloor()).getOffice();
+                            return company.getFloorList().get(e.getFloor()).getOffice();
                         }
                     }
                     freeToilet.join(e);
@@ -194,19 +194,19 @@ public class WorkTask {
                 case LIFTING:
                     Elevator freeElevator = company.getFreeElevator();
                     if (freeElevator == null) {
-                        return company.getFloorList().get(e.gettFloor()).getOffice();
+                        return company.getFloorList().get(e.getFloor()).getOffice();
                     }
                     freeElevator.join(e);
                     return freeElevator;
                 default:
-                    return company.getFloorList().get(e.gettFloor()).getOffice();
+                    return company.getFloorList().get(e.getFloor()).getOffice();
             }
         } else if (e.getWorkStatus() == WORK_STATUS.HOMING) {
-            // 在家, 返回办公区复工
+
             e.setWorkStatus(WORK_STATUS.WORKING);
-            return company.getFloorList().get(e.gettFloor()).getOffice();
+            return company.getFloorList().get(e.getFloor()).getOffice();
         } else {
-            // 保持原状态，等待释放
+
             return room;
         }
     }
