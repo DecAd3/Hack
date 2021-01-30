@@ -79,21 +79,21 @@ public class ReworkService {
                 .size();
         logFile.write("---------");
         logFile.write("\n");
-        logFile.write("World Timeï¼š" + WORLD_TIME);
+        logFile.write("World Time :" + WORLD_TIME);
         logFile.write("\n");
         logFile.write("DAY " + (WORLD_TIME / 48));
         logFile.write("\n");
-        logFile.write("Officeï¼š" + OFFICE_AMOUNT);
+        logFile.write("Office :" + OFFICE_AMOUNT);
         logFile.write("\n");
-        logFile.write("Meeting Roomï¼š" + MEETING_AMOUNT);
+        logFile.write("Meeting Room:" + MEETING_AMOUNT);
         logFile.write("\n");
-        logFile.write("Rest Roomï¼š" + RESTING_AMOUNT);
+        logFile.write("Rest Room" + RESTING_AMOUNT);
         logFile.write("\n");
-        logFile.write("Toiletï¼š" + TOILETING_AMOUNT);
+        logFile.write("Toilet :" + TOILETING_AMOUNT);
         logFile.write("\n");
-        logFile.write("INFECTEDï¼š" + INFECTED_AMOUNT);
+        logFile.write("INFECTED :" + INFECTED_AMOUNT);
         logFile.write("\n");
-        logFile.write("RISKYï¼š" + RISKY_AMOUNT);
+        logFile.write("RISKY :" + RISKY_AMOUNT);
         logFile.write("\n");
         logFile.write("---------");
         logFile.flush();
@@ -184,8 +184,6 @@ public class ReworkService {
         task.getActionRoom().setUseDuration(task.getActionRoom().getUseDuration() + 1);
     }
 
-
-
     public void rework(int begin) throws IOException {
         // randomly pick some employees to be the roots
         Random random = new Random();
@@ -197,7 +195,7 @@ public class ReworkService {
                 root = company.getEmployeePool().get(index);
             }
             root.setHealthyStatus(HEALTHY_STATUS.INFECTED);
-            logFile.write("The root is: " + root.toString() + " Employee");
+            logFile.write("The root is" + root.toString() + " Employee");
             logFile.write("\n");
             logFile.flush();
         }
@@ -241,7 +239,7 @@ public class ReworkService {
                         e.printStackTrace();
                     }
                 }
-            }   
+            }
 
         }
     }
