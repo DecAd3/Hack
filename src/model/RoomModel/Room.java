@@ -70,8 +70,12 @@ public abstract class Room {
         this.employeeList.add(e);
     }
 
-}
+    public enum STATUS {
+        IN_USE, FREE
+    }
 
-enum STATUS {
-    IN_USE, FREE
+    public enum ROOM_TYPE {
+        Office, MeetingRoom, Elevator, RestRoom, Toilet,
+    }
+
 }
