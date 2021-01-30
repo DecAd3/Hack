@@ -57,8 +57,8 @@ public class WorkTask {
         List<Employee> employeeList = new ArrayList<>();
         if (actionRoom instanceof MeetingRoom) {
             employee.setWorkStatus(WORK_STATUS.MEETING);
-            MeetingRoom meetingroom = (MeetingRoom) actionRoom;
-            employeeList = meetingroom.getEmployeeList();
+            MeetingRoom meetingRoom = (MeetingRoom) actionRoom;
+            employeeList = meetingRoom.getEmployeeList();
         } else if (actionRoom instanceof Toilet) {
             employee.setWorkStatus(WORK_STATUS.PEEING);
             Toilet toilet = (Toilet) actionRoom;
@@ -87,7 +87,7 @@ public class WorkTask {
             if (employee.getHealthyStatus() == HEALTHY_STATUS.INFECTED) {
                 for (int i = 0; i < employeeList.size(); i++) {
                     if (employeeList.get(i).getHealthyStatus() != HEALTHY_STATUS.INFECTED) {
-                        if (d <= Constants.INFECT_POSSIBILITY) {
+                        if (d <= Constants.P_INFECT) {
                             employeeList.get(i).setHealthyStatus(HEALTHY_STATUS.INFECTED);
                             logFile.write(employeeList.get(i).toString() + " is infected, source of infection: " + employee.toString() + ", location: "
                                     + actionRoom.toString());
@@ -113,7 +113,7 @@ public class WorkTask {
             }
         }
         if (isInfected.get()) {
-            if (d <= Constants.INFECT_POSSIBILITY) {
+            if (d <= Constants.P_INFECT) {
                 if (employee.getHealthyStatus() != HEALTHY_STATUS.INFECTED) {
                     employee.setHealthyStatus(HEALTHY_STATUS.INFECTED);
                     logFile.write(
@@ -142,28 +142,24 @@ public class WorkTask {
             // Allow to alter status, throw dice
             WORK_STATUS nextStatus = WORK_STATUS.WORKING;
             double d = Math.random();
-            if (d <= Constants.MEETING_POSSIBILITY) {
+            if (d <= Constants.P_MEETING) {
                 nextStatus = WORK_STATUS.MEETING;
-            } else if (d > Constants.MEETING_POSSIBILITY
-                    && d <= (Constants.MEETING_POSSIBILITY + Constants.RESTING_POSSIBILITY)) {
+            } else if (d > Constants.P_MEETING && d <= (Constants.P_MEETING + Constants.P_RESTING)) {
                 nextStatus = WORK_STATUS.RESTING;
-            } else if (d > (Constants.MEETING_POSSIBILITY + Constants.RESTING_POSSIBILITY)
-                    && d <= (Constants.MEETING_POSSIBILITY + Constants.RESTING_POSSIBILITY
-                            + Constants.PEEING_POSSIBILITY)) {
+            } else if (d > (Constants.P_MEETING + Constants.P_RESTING)
+                    && d <= (Constants.P_MEETING + Constants.P_RESTING + Constants.P_PEEING)) {
                 nextStatus = WORK_STATUS.PEEING;
-            } else if (d > (Constants.MEETING_POSSIBILITY + Constants.RESTING_POSSIBILITY
-                    + Constants.PEEING_POSSIBILITY)
-                    && d <= (Constants.MEETING_POSSIBILITY + Constants.RESTING_POSSIBILITY
-                            + Constants.PEEING_POSSIBILITY + Constants.LIFTING_POSSIBILITY)) {
+            } else if (d > (Constants.P_MEETING + Constants.P_RESTING + Constants.P_PEEING)
+                    && d <= (Constants.P_MEETING + Constants.P_RESTING + Constants.P_PEEING + Constants.P_LIFTING)) {
                 nextStatus = WORK_STATUS.LIFTING;
             }
             Floor floor = company.getFloorList().get(e.getFloor());
             // Apart from elevator, all choice of room type has a favor in the same floor
             switch (nextStatus) {
                 case MEETING:
-                    MeetingRoom freeMeetingRoom = floor.getFreeMeetingRoom();
+                    MeetingRoom freeMeetingRoom = (MeetingRoom) floor.getFreeMeetingRoom();
                     if (freeMeetingRoom == null) {
-                        freeMeetingRoom = company.getFreeMeetingRoomPool();
+                        freeMeetingRoom = (MeetingRoom) company.getFreeMeetingRoomPool();
                         if (freeMeetingRoom == null) {
                             // If no capacity available, return to the office area
                             return company.getFloorList().get(e.getFloor()).getOffice();
@@ -172,9 +168,9 @@ public class WorkTask {
                     freeMeetingRoom.join(e);
                     return freeMeetingRoom;
                 case RESTING:
-                    RestRoom freeRestroom = floor.getFreeRestRoom();
+                    RestRoom freeRestroom = (RestRoom) floor.getFreeRestRoom();
                     if (freeRestroom == null) {
-                        freeRestroom = company.getFreeRestroomPool();
+                        freeRestroom = (RestRoom) company.getFreeRestroomPool();
                         if (freeRestroom == null) {
                             return company.getFloorList().get(e.getFloor()).getOffice();
                         }
@@ -182,9 +178,9 @@ public class WorkTask {
                     freeRestroom.join(e);
                     return freeRestroom;
                 case PEEING:
-                    Toilet freeToilet = floor.getFreeToilet();
+                    Toilet freeToilet = (Toilet) floor.getFreeToilet();
                     if (freeToilet == null) {
-                        freeToilet = company.getFreeToiletPool();
+                        freeToilet = (Toilet) company.getFreeToiletPool();
                         if (freeToilet == null) {
                             return company.getFloorList().get(e.getFloor()).getOffice();
                         }
@@ -192,7 +188,7 @@ public class WorkTask {
                     freeToilet.join(e);
                     return freeToilet;
                 case LIFTING:
-                    Elevator freeElevator = company.getFreeElevator();
+                    Elevator freeElevator = (Elevator) company.getFreeElevator();
                     if (freeElevator == null) {
                         return company.getFloorList().get(e.getFloor()).getOffice();
                     }

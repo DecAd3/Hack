@@ -5,7 +5,7 @@ import java.util.List;
 
 import model.Employee;
 
-public abstract class Room {
+public class Room {
     protected int number;
     protected int floor;
     protected int capacity;

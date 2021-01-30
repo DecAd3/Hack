@@ -1,15 +1,11 @@
 package service;
 
-import static util.Constants.FIND_OUT_POSSIBILITY;
-import static util.Constants.LIFTING_POSSIBILITY;
-import static util.Constants.LIFT_DURATION;
+import static util.Constants.D_LIFT;
+import static util.Constants.D_MEETING;
+import static util.Constants.D_PEE;
+import static util.Constants.D_REST;
 import static util.Constants.LOG_PATH;
-import static util.Constants.MEETING_DURATION;
-import static util.Constants.MEETING_POSSIBILITY;
-import static util.Constants.PEEING_POSSIBILITY;
-import static util.Constants.PEE_DURATION;
-import static util.Constants.RESTING_POSSIBILITY;
-import static util.Constants.REST_DURATION;
+import static util.Constants.P_ISOLATED;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -25,13 +21,7 @@ import model.Company;
 import model.Employee;
 import model.Employee.HEALTHY_STATUS;
 import model.Employee.WORK_STATUS;
-import model.Floor;
-import model.RoomModel.Elevator;
-import model.RoomModel.MeetingRoom;
-import model.RoomModel.RestRoom;
-import model.RoomModel.Room;
 import model.RoomModel.Room.STATUS;
-import model.RoomModel.Toilet;
 
 public class ReworkService {
     private static ReworkService _instance = new ReworkService();
@@ -118,7 +108,7 @@ public class ReworkService {
             if (employee.getHealthyStatus() == HEALTHY_STATUS.ISOLATED)
                 return;
             double d = Math.random();
-            if (employee.getHealthyStatus() == HEALTHY_STATUS.INFECTED && d < FIND_OUT_POSSIBILITY) {
+            if (employee.getHealthyStatus() == HEALTHY_STATUS.INFECTED && d < P_ISOLATED) {
                 try {
                     logFile.write(employee.toString() + " Employee is infected");
                     logFile.write("\n");
@@ -144,22 +134,22 @@ public class ReworkService {
             case WORKING:
                 break;
             case MEETING:
-                if (task.getActionRoom().getUseDuration() > MEETING_DURATION) {
+                if (task.getActionRoom().getUseDuration() > D_MEETING) {
                     needRelease = true;
                 }
                 break;
             case RESTING:
-                if (task.getActionRoom().getUseDuration() > REST_DURATION) {
+                if (task.getActionRoom().getUseDuration() > D_REST) {
                     needRelease = true;
                 }
                 break;
             case PEEING:
-                if (task.getActionRoom().getUseDuration() > PEE_DURATION) {
+                if (task.getActionRoom().getUseDuration() > D_PEE) {
                     needRelease = true;
                 }
                 break;
             case LIFTING:
-                if (task.getActionRoom().getUseDuration() > LIFT_DURATION) {
+                if (task.getActionRoom().getUseDuration() > D_LIFT) {
                     needRelease = true;
                 }
                 break;
@@ -194,75 +184,7 @@ public class ReworkService {
         task.getActionRoom().setUseDuration(task.getActionRoom().getUseDuration() + 1);
     }
 
-    private Room switchStatus(Employee e, Room room) {
-        if (e.getWorkStatus() == WORK_STATUS.WORKING) {
 
-            WORK_STATUS nextStatus = WORK_STATUS.WORKING;
-            double d = Math.random();
-            if (d <= MEETING_POSSIBILITY) {
-                nextStatus = WORK_STATUS.MEETING;
-            } else if (d > MEETING_POSSIBILITY && d <= (MEETING_POSSIBILITY + RESTING_POSSIBILITY)) {
-                nextStatus = WORK_STATUS.RESTING;
-            } else if (d > (MEETING_POSSIBILITY + RESTING_POSSIBILITY)
-                    && d <= (MEETING_POSSIBILITY + RESTING_POSSIBILITY + PEEING_POSSIBILITY)) {
-                nextStatus = WORK_STATUS.PEEING;
-            } else if (d > (MEETING_POSSIBILITY + RESTING_POSSIBILITY + PEEING_POSSIBILITY)
-                    && d <= (MEETING_POSSIBILITY + RESTING_POSSIBILITY + PEEING_POSSIBILITY + LIFTING_POSSIBILITY)) {
-                nextStatus = WORK_STATUS.LIFTING;
-            }
-            Floor floor = company.getFloorList().get(e.getFloor());
-
-            switch (nextStatus) {
-                case MEETING:
-                    MeetingRoom freeMeetingRoom = floor.getFreeMeetingRoom();
-                    if (freeMeetingRoom == null) {
-                        freeMeetingRoom = company.getFreeMeetingRoomPool();
-                        if (freeMeetingRoom == null) {
-
-                            return company.getFloorList().get(e.getFloor()).getOffice();
-                        }
-                    }
-                    freeMeetingRoom.join(e);
-                    return freeMeetingRoom;
-                case RESTING:
-                    RestRoom freeRestroom = floor.getFreeRestRoom();
-                    if (freeRestroom == null) {
-                        freeRestroom = company.getFreeRestroomPool();
-                        if (freeRestroom == null) {
-                            return company.getFloorList().get(e.getFloor()).getOffice();
-                        }
-                    }
-                    freeRestroom.join(e);
-                    return freeRestroom;
-                case PEEING:
-                    Toilet freeToilet = floor.getFreeToilet();
-                    if (freeToilet == null) {
-                        freeToilet = company.getFreeToiletPool();
-                        if (freeToilet == null) {
-                            return company.getFloorList().get(e.getFloor()).getOffice();
-                        }
-                    }
-                    freeToilet.join(e);
-                    return freeToilet;
-                case LIFTING:
-                    Elevator freeElevator = company.getFreeElevator();
-                    if (freeElevator == null) {
-                        return company.getFloorList().get(e.getFloor()).getOffice();
-                    }
-                    freeElevator.join(e);
-                    return freeElevator;
-                default:
-                    return company.getFloorList().get(e.getFloor()).getOffice();
-            }
-        } else if (e.getWorkStatus() == WORK_STATUS.HOMING) {
-
-            e.setWorkStatus(WORK_STATUS.WORKING);
-            return company.getFloorList().get(e.getFloor()).getOffice();
-        } else {
-
-            return room;
-        }
-    }
 
     public void rework(int begin) throws IOException {
         // randomly pick some employees to be the roots
