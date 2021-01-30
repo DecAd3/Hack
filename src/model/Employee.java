@@ -1,18 +1,24 @@
 package model;
 
 public class Employee {
-    private String number;
+    private int number;
+    private int floor;
     private int workStatus;
     private int healthyStatus;
 
-    public Employee(String number) {
+    public Employee(int floor, int number) {
         this.number = number;
+        this.floor = floor;
         this.workStatus = STATUS_HOMING;
         this.healthyStatus = STATUS_HEALTHY;
     }
 
-    public String getNumber() {
+    public int getNumber() {
         return number;
+    }
+
+    public int gettFloor() {
+        return floor;
     }
 
     public int getWorkStatus() {
@@ -29,6 +35,11 @@ public class Employee {
 
     public void setHealthyStatus(int healthyStatus) {
         this.healthyStatus = healthyStatus;
+    }
+
+    @Override
+    public String toString() {
+        return floor + " - " + number;
     }
 
     // work status
