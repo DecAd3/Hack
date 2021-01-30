@@ -131,37 +131,47 @@ public class WorkTask {
                 }
             }
         }
-        // 切换状态
+        // Switch room status
         room = switchStatus(employee, actionRoom);
         queue.add(new WorkTask(employee, room));
     }
 
+    private WORK_STATUS getNextStatus() {
+        WORK_STATUS nextStatus = WORK_STATUS.WORKING;
+        double rand_int = Math.random();
+        if (rand_int <= Constants.P_MEETING) {
+            nextStatus = WORK_STATUS.MEETING;
+        } else if (rand_int > Constants.P_MEETING && rand_int <= (Constants.P_MEETING + Constants.P_RESTING)) {
+            nextStatus = WORK_STATUS.RESTING;
+        } else if (rand_int > (Constants.P_MEETING + Constants.P_RESTING)
+                && rand_int <= (Constants.P_MEETING + Constants.P_RESTING + Constants.P_PEEING)) {
+            nextStatus = WORK_STATUS.PEEING;
+        } else if (rand_int > (Constants.P_MEETING + Constants.P_RESTING + Constants.P_PEEING)
+                && rand_int <= (Constants.P_MEETING + Constants.P_RESTING + Constants.P_PEEING + Constants.P_LIFTING)) {
+            nextStatus = WORK_STATUS.LIFTING;
+        }
+        return nextStatus;
+    }
+
     private Room switchStatus(Employee e, Room room) {
+
         Company company = Company.getInstance();
+
         if (e.getWorkStatus() == WORK_STATUS.WORKING) {
-            // 可以更改状态,摇骰子
-            WORK_STATUS nextStatus = WORK_STATUS.WORKING;
-            double d = Math.random();
-            if (d <= Constants.P_MEETING) {
-                nextStatus = WORK_STATUS.MEETING;
-            } else if (d > Constants.P_MEETING && d <= (Constants.P_MEETING + Constants.P_RESTING)) {
-                nextStatus = WORK_STATUS.RESTING;
-            } else if (d > (Constants.P_MEETING + Constants.P_RESTING)
-                    && d <= (Constants.P_MEETING + Constants.P_RESTING + Constants.P_PEEING)) {
-                nextStatus = WORK_STATUS.PEEING;
-            } else if (d > (Constants.P_MEETING + Constants.P_RESTING + Constants.P_PEEING)
-                    && d <= (Constants.P_MEETING + Constants.P_RESTING + Constants.P_PEEING + Constants.P_LIFTING)) {
-                nextStatus = WORK_STATUS.LIFTING;
-            }
+
+            // can switch room, calculate the possibility
+            WORK_STATUS nextStatus = getNextStatus();
+
             Floor floor = company.getFloorList().get(e.getFloor());
-            // 除了电梯类型外，其他房间都优先选择本层
+
+            // use room in the same floor first (meeting room except)
             switch (nextStatus) {
                 case MEETING:
                     MeetingRoom freeMeetingRoom = (MeetingRoom) floor.getFreeMeetingRoom();
                     if (freeMeetingRoom == null) {
                         freeMeetingRoom = (MeetingRoom) company.getFreeMeetingRoomPool();
                         if (freeMeetingRoom == null) {
-                            // 无可用房间，返回办公区
+                            // back to office
                             return company.getFloorList().get(e.getFloor()).getOffice();
                         }
                     }
