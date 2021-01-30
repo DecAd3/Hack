@@ -34,7 +34,7 @@ public class GraphicsConstants {
                     int x2 = (EACH_EMPTY_WIDTH + EACH_BAY_WIDTH) * (k + 1);
                     int y1 = i * EACH_FLOOR_HEIGHT + (EACH_EMPTY_HEIGHT * (j + 1) + EACH_BAY_HEIGHT * j);
                     int y2 = i * EACH_FLOOR_HEIGHT + ((EACH_EMPTY_HEIGHT + EACH_BAY_HEIGHT) * (j + 1));
-                    WorkBay workBay = new WorkBay(i + "-" + num, x1, x2, y1, y2);
+                    WorkBay workBay = new WorkBay(i, num, x1, x2, y1, y2);
                     workBays.add(workBay);
                     num++;
                 }
@@ -45,22 +45,33 @@ public class GraphicsConstants {
     }
 
     public static class WorkBay {
-        private String number;
+        private int number;
+        private int floor;
         private int x1;
         private int x2;
         private int y1;
         private int y2;
 
-        public WorkBay(String number, int x1, int x2, int y1, int y2) {
+        public WorkBay(int floor, int number, int x1, int x2, int y1, int y2) {
             this.number = number;
+            this.floor = floor;
             this.x1 = x1;
             this.x2 = x2;
             this.y1 = y1;
             this.y2 = y2;
         }
 
-        public String getNumber() {
+        @Override
+        public String toString() {
+            return floor + " - " + number;
+        }
+
+        public int getNumber() {
             return number;
+        }
+
+        public int getFloor() {
+            return floor;
         }
 
         public int getX1() {

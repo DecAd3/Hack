@@ -62,19 +62,19 @@ public class MainPanel extends JPanel implements Runnable {
         @Override
         public void paint(Graphics g) {
                 super.paint(g);
-                Map<Integer, Employee.HEALTHY_STATUS> employeeMap = company.getEmployeePool().stream()
-                                .collect(Collectors.toMap(Employee::getNumber, Employee::getHealthyStatus));
+                Map<String, Employee.HEALTHY_STATUS> employeeMap = company.getEmployeePool().stream()
+                                .collect(Collectors.toMap(Employee::toString, Employee::getHealthyStatus));
                 for (GraphicsConstants.Floor f : GraphicsConstants.floors) {
                         g.setColor(Color.black);
                         g.drawLine(f.getX1(), f.getY1(), f.getX2(), f.getY1());
                         for (GraphicsConstants.WorkBay bay : f.getWorkBayList()) {
-                                if (employeeMap.get(bay.getNumber()) == HEALTHY_STATUS.HEALTHY) {
+                                if (employeeMap.get(bay.toString()) == HEALTHY_STATUS.HEALTHY) {
                                         g.setColor(new Color(0x00ff00));
-                                } else if (employeeMap.get(bay.getNumber()) == HEALTHY_STATUS.RISKY) {
+                                } else if (employeeMap.get(bay.toString()) == HEALTHY_STATUS.RISKY) {
                                         g.setColor(new Color(0x0000ff));
-                                } else if (employeeMap.get(bay.getNumber()) == HEALTHY_STATUS.INFECTED) {
+                                } else if (employeeMap.get(bay.toString()) == HEALTHY_STATUS.INFECTED) {
                                         g.setColor(new Color(0xff0000));
-                                } else if (employeeMap.get(bay.getNumber()) == HEALTHY_STATUS.ISOLATED) {
+                                } else if (employeeMap.get(bay.toString()) == HEALTHY_STATUS.ISOLATED) {
                                         g.setColor(new Color(0x000000));
                                 }
                                 g.fillRect(bay.getX1(), bay.getY1(), bay.getX2() - bay.getX1(),

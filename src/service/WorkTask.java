@@ -52,8 +52,7 @@ public class WorkTask {
 
         Room room = null;
         final double d = Math.random();
-        Room room = null;
-        final double d = Math.random();
+
         AtomicBoolean isInfected = new AtomicBoolean(false);
         List<Employee> employeeList = new ArrayList<>();
         if (actionRoom instanceof MeetingRoom) {
@@ -152,7 +151,8 @@ public class WorkTask {
                     && d <= (Constants.MEETING_POSSIBILITY + Constants.RESTING_POSSIBILITY
                             + Constants.PEEING_POSSIBILITY)) {
                 nextStatus = WORK_STATUS.PEEING;
-            } else if (d > (Constants.MEETING_POSSIBILITY + Constants.RESTING_POSSIBILITY + Constants.EEING_POSSIBILITY)
+            } else if (d > (Constants.MEETING_POSSIBILITY + Constants.RESTING_POSSIBILITY
+                    + Constants.PEEING_POSSIBILITY)
                     && d <= (Constants.MEETING_POSSIBILITY + Constants.RESTING_POSSIBILITY
                             + Constants.PEEING_POSSIBILITY + Constants.LIFTING_POSSIBILITY)) {
                 nextStatus = WORK_STATUS.LIFTING;

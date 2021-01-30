@@ -2,6 +2,7 @@ package model;
 
 public class Employee {
     private int number;
+
     private int floor;
     private WORK_STATUS workStatus;
     private HEALTHY_STATUS healthyStatus;
@@ -11,6 +12,7 @@ public class Employee {
         this.floor = floor;
         this.workStatus = WORK_STATUS.HOMING;
         this.healthyStatus = HEALTHY_STATUS.HEALTHY;
+
     }
 
     public int getNumber() {
