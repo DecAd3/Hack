@@ -25,14 +25,14 @@ public class Company {
         return _instance;
     }
 
-    static List<Floor> floorList;
-    static List<MeetingRoom> meetingRoomPool;
-    static List<Toilet> toiletPool;
-    static List<RestRoom> restroomPool;
-    static List<Employee> employeePool;
-    static List<Elevator> elevatorList;
+    private List<Floor> floorList;
+    private List<MeetingRoom> meetingRoomPool;
+    private List<Toilet> toiletPool;
+    private List<RestRoom> restroomPool;
+    private List<Employee> employeePool;
+    private List<Elevator> elevatorList;
 
-    public static List<Elevator> getElevatorList() {
+    public List<Elevator> getElevatorList() {
         return elevatorList;
     }
 
@@ -95,7 +95,7 @@ public class Company {
         return restroomPool;
     }
 
-    public static List<Employee> getEmployeePool() {
+    public List<Employee> getEmployeePool() {
         return employeePool;
     }
 
