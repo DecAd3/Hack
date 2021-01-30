@@ -18,7 +18,7 @@ public class Main {
         frame.setSize(1200, 1200);
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
-        frame.setTitle("aaa");
+        frame.setTitle("COVID-19 Simulator");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         panelThread.start();
     }

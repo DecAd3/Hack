@@ -41,14 +41,14 @@ public class Company {
     }
 
     public MeetingRoom getFreeMeetingRoomPool() {
-        AtomicReference<MeetingRoom> ret = new AtomicReference<MeetingRoom>();
+        AtomicReference<MeetingRoom> rooms = new AtomicReference<MeetingRoom>();
         meetingRoomPool.forEach(m -> {
             if (m.getUseStatus() == STATUS.FREE
                     || (m.getUseStatus() == STATUS.IN_USE && m.getEmployeeList().size() < m.getCapacity())) {
-                ret.set(m);
+            	rooms.set(m);
             }
         });
-        return ret.get();
+        return rooms.get();
     }
 
     public RestRoom getFreeRestroomPool() {
@@ -56,6 +56,7 @@ public class Company {
         restroomPool.forEach(m -> {
             if (m.getUseStatus() == STATUS.FREE
                     || (m.getUseStatus() == STATUS.IN_USE && m.getEmployeeList().size() < m.getCapacity())) {
+            	rooms.set(m);
             }
         });
         return rooms.get();
