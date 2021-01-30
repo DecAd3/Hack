@@ -25,10 +25,10 @@ public class MainPanel extends JPanel implements Runnable {
 
         public void info() {
                 WORLD_TIME = ReworkService.getInstance().getWorldTime();
-                int OFFICEING_AMOUNT = company.getEmployeePool().stream()
+                int OFFICE_AMOUNT = company.getEmployeePool().stream()
                                 .filter(employee -> employee.getWorkStatus() == WORK_STATUS.WORKING)
                                 .collect(Collectors.toList()).size();
-                int MEETTING_AMOUNT = company.getEmployeePool().stream()
+                int MEETING_AMOUNT = company.getEmployeePool().stream()
                                 .filter(employee -> employee.getWorkStatus() == WORK_STATUS.MEETING)
                                 .collect(Collectors.toList()).size();
                 int RESTING_AMOUNT = company.getEmployeePool().stream()
@@ -46,8 +46,8 @@ public class MainPanel extends JPanel implements Runnable {
                 System.out.println("---------");
                 System.out.println("World Time:" + WORLD_TIME);
                 System.out.println("The " + (WORLD_TIME / 6 / 8) + "th day return to work");
-                System.out.println("People in office area:" + OFFICEING_AMOUNT);
-                System.out.println("People in meeting room:" + MEETTING_AMOUNT);
+                System.out.println("People in office area:" + OFFICE_AMOUNT);
+                System.out.println("People in meeting room:" + MEETING_AMOUNT);
                 System.out.println("People in restroom:" + RESTING_AMOUNT);
                 System.out.println("People in toilet:" + TOILETING_AMOUNT);
                 System.out.println("Infected people:" + INFECTED_AMOUNT);
@@ -83,10 +83,10 @@ public class MainPanel extends JPanel implements Runnable {
                                                 bay.getY2() - bay.getY1());
                         }
                 }
-                int OFFICEING_AMOUNT = company.getEmployeePool().stream()
+                int OFFICE_AMOUNT = company.getEmployeePool().stream()
                                 .filter(employee -> employee.getWorkStatus() == WORK_STATUS.WORKING)
                                 .collect(Collectors.toList()).size();
-                int MEETTING_AMOUNT = company.getEmployeePool().stream()
+                int MEETING_AMOUNT = company.getEmployeePool().stream()
                                 .filter(employee -> employee.getWorkStatus() == WORK_STATUS.MEETING)
                                 .collect(Collectors.toList()).size();
                 int RESTING_AMOUNT = company.getEmployeePool().stream()
@@ -117,8 +117,8 @@ public class MainPanel extends JPanel implements Runnable {
                 Font f3 = new Font("Times New Roman", Font.PLAIN, 15);
                 g.setFont(f3);
                 g.setColor(new Color(0x99004c));
-                g.drawString("People in office area:" + OFFICEING_AMOUNT, EACH_FLOOR_WIDTH + 30, 100);
-                g.drawString("People in meeting room:" + MEETTING_AMOUNT, EACH_FLOOR_WIDTH + 30, 150);
+                g.drawString("People in office area:" + OFFICE_AMOUNT, EACH_FLOOR_WIDTH + 30, 100);
+                g.drawString("People in meeting room:" + MEETING_AMOUNT, EACH_FLOOR_WIDTH + 30, 150);
                 g.drawString("People in restroom:" + RESTING_AMOUNT, EACH_FLOOR_WIDTH + 30, 200);
                 g.drawString("People in toilet:" + TOILETING_AMOUNT, EACH_FLOOR_WIDTH + 30, 250);
                 g.drawString("People in elevator:" + ELEVATOR_AMOUNT, EACH_FLOOR_WIDTH + 30, 300);
