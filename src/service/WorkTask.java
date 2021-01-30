@@ -160,7 +160,6 @@ public class WorkTask {
         Company company = Company.getInstance();
 
         if (e.getWorkStatus() == WORK_STATUS.WORKING) {
-<<<<<<< HEAD
 
             // can switch room, calculate the possibility
             WORK_STATUS nextStatus = getNextStatus();
@@ -168,35 +167,13 @@ public class WorkTask {
             Floor floor = company.getFloorList().get(e.getFloor());
 
             // use room in the same floor first (meeting room except)
-=======
-            // Allow to alter status, throw dice
-            WORK_STATUS nextStatus = WORK_STATUS.WORKING;
-            double d = Math.random();
-            if (d <= Constants.P_MEETING) {
-                nextStatus = WORK_STATUS.MEETING;
-            } else if (d > Constants.P_MEETING && d <= (Constants.P_MEETING + Constants.P_RESTING)) {
-                nextStatus = WORK_STATUS.RESTING;
-            } else if (d > (Constants.P_MEETING + Constants.P_RESTING)
-                    && d <= (Constants.P_MEETING + Constants.P_RESTING + Constants.P_PEEING)) {
-                nextStatus = WORK_STATUS.PEEING;
-            } else if (d > (Constants.P_MEETING + Constants.P_RESTING + Constants.P_PEEING)
-                    && d <= (Constants.P_MEETING + Constants.P_RESTING + Constants.P_PEEING + Constants.P_LIFTING)) {
-                nextStatus = WORK_STATUS.LIFTING;
-            }
-            Floor floor = company.getFloorList().get(e.getFloor());
-            // Apart from elevator, all choice of room type has a favor in the same floor
->>>>>>> 4dda6c18725556cb6653a2c1518c1ad93d626146
             switch (nextStatus) {
                 case MEETING:
                     MeetingRoom freeMeetingRoom = (MeetingRoom) floor.getFreeMeetingRoom();
                     if (freeMeetingRoom == null) {
                         freeMeetingRoom = (MeetingRoom) company.getFreeMeetingRoomPool();
                         if (freeMeetingRoom == null) {
-<<<<<<< HEAD
                             // back to office
-=======
-                            // If no capacity available, return to the office area
->>>>>>> 4dda6c18725556cb6653a2c1518c1ad93d626146
                             return company.getFloorList().get(e.getFloor()).getOffice();
                         }
                     }
