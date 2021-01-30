@@ -1,15 +1,15 @@
 package service;
 
-import static util.Constants.FIND_OUT_POSSIBILITY;
-import static util.Constants.LIFTING_POSSIBILITY;
-import static util.Constants.LIFT_DURATION;
+import static util.Constants.D_LIFT;
+import static util.Constants.D_MEETING;
+import static util.Constants.D_PEE;
+import static util.Constants.D_REST;
 import static util.Constants.LOG_PATH;
-import static util.Constants.MEETING_DURATION;
-import static util.Constants.MEETING_POSSIBILITY;
-import static util.Constants.PEEING_POSSIBILITY;
-import static util.Constants.PEE_DURATION;
-import static util.Constants.RESTING_POSSIBILITY;
-import static util.Constants.REST_DURATION;
+import static util.Constants.P_ISOLATED;
+import static util.Constants.P_LIFTING;
+import static util.Constants.P_MEETING;
+import static util.Constants.P_PEEING;
+import static util.Constants.P_RESTING;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -118,7 +118,7 @@ public class ReworkService {
             if (employee.getHealthyStatus() == HEALTHY_STATUS.ISOLATED)
                 return;
             double d = Math.random();
-            if (employee.getHealthyStatus() == HEALTHY_STATUS.INFECTED && d < FIND_OUT_POSSIBILITY) {
+            if (employee.getHealthyStatus() == HEALTHY_STATUS.INFECTED && d < P_ISOLATED) {
                 try {
                     logFile.write(employee.toString() + " Employee is infected");
                     logFile.write("\n");
@@ -144,22 +144,22 @@ public class ReworkService {
             case WORKING:
                 break;
             case MEETING:
-                if (task.getActionRoom().getUseDuration() > MEETING_DURATION) {
+                if (task.getActionRoom().getUseDuration() > D_MEETING) {
                     needRelease = true;
                 }
                 break;
             case RESTING:
-                if (task.getActionRoom().getUseDuration() > REST_DURATION) {
+                if (task.getActionRoom().getUseDuration() > D_REST) {
                     needRelease = true;
                 }
                 break;
             case PEEING:
-                if (task.getActionRoom().getUseDuration() > PEE_DURATION) {
+                if (task.getActionRoom().getUseDuration() > D_PEE) {
                     needRelease = true;
                 }
                 break;
             case LIFTING:
-                if (task.getActionRoom().getUseDuration() > LIFT_DURATION) {
+                if (task.getActionRoom().getUseDuration() > D_LIFT) {
                     needRelease = true;
                 }
                 break;
@@ -199,15 +199,15 @@ public class ReworkService {
 
             WORK_STATUS nextStatus = WORK_STATUS.WORKING;
             double d = Math.random();
-            if (d <= MEETING_POSSIBILITY) {
+            if (d <= P_MEETING) {
                 nextStatus = WORK_STATUS.MEETING;
-            } else if (d > MEETING_POSSIBILITY && d <= (MEETING_POSSIBILITY + RESTING_POSSIBILITY)) {
+            } else if (d > P_MEETING && d <= (P_MEETING + P_RESTING)) {
                 nextStatus = WORK_STATUS.RESTING;
-            } else if (d > (MEETING_POSSIBILITY + RESTING_POSSIBILITY)
-                    && d <= (MEETING_POSSIBILITY + RESTING_POSSIBILITY + PEEING_POSSIBILITY)) {
+            } else if (d > (P_MEETING + P_RESTING)
+                    && d <= (P_MEETING + P_RESTING + P_PEEING)) {
                 nextStatus = WORK_STATUS.PEEING;
-            } else if (d > (MEETING_POSSIBILITY + RESTING_POSSIBILITY + PEEING_POSSIBILITY)
-                    && d <= (MEETING_POSSIBILITY + RESTING_POSSIBILITY + PEEING_POSSIBILITY + LIFTING_POSSIBILITY)) {
+            } else if (d > (P_MEETING + P_RESTING + P_PEEING)
+                    && d <= (P_MEETING + P_RESTING + P_PEEING + P_LIFTING)) {
                 nextStatus = WORK_STATUS.LIFTING;
             }
             Floor floor = company.getFloorList().get(e.getFloor());

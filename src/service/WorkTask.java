@@ -87,7 +87,7 @@ public class WorkTask {
             if (employee.getHealthyStatus() == HEALTHY_STATUS.INFECTED) {
                 for (int i = 0; i < employeeList.size(); i++) {
                     if (employeeList.get(i).getHealthyStatus() != HEALTHY_STATUS.INFECTED) {
-                        if (d <= Constants.INFECT_POSSIBILITY) {
+                        if (d <= Constants.P_INFECT) {
                             employeeList.get(i).setHealthyStatus(HEALTHY_STATUS.INFECTED);
                             logFile.write(employeeList.get(i).toString() + "号员工被感染,感染源：" + employee.toString() + ",地点："
                                     + actionRoom.toString());
@@ -113,7 +113,7 @@ public class WorkTask {
             }
         }
         if (isInfected.get()) {
-            if (d <= Constants.INFECT_POSSIBILITY) {
+            if (d <= Constants.P_INFECT) {
                 if (employee.getHealthyStatus() != HEALTHY_STATUS.INFECTED) {
                     employee.setHealthyStatus(HEALTHY_STATUS.INFECTED);
                     logFile.write(
@@ -142,19 +142,15 @@ public class WorkTask {
             // 可以更改状态,摇骰子
             WORK_STATUS nextStatus = WORK_STATUS.WORKING;
             double d = Math.random();
-            if (d <= Constants.MEETING_POSSIBILITY) {
+            if (d <= Constants.P_MEETING) {
                 nextStatus = WORK_STATUS.MEETING;
-            } else if (d > Constants.MEETING_POSSIBILITY
-                    && d <= (Constants.MEETING_POSSIBILITY + Constants.RESTING_POSSIBILITY)) {
+            } else if (d > Constants.P_MEETING && d <= (Constants.P_MEETING + Constants.P_RESTING)) {
                 nextStatus = WORK_STATUS.RESTING;
-            } else if (d > (Constants.MEETING_POSSIBILITY + Constants.RESTING_POSSIBILITY)
-                    && d <= (Constants.MEETING_POSSIBILITY + Constants.RESTING_POSSIBILITY
-                            + Constants.PEEING_POSSIBILITY)) {
+            } else if (d > (Constants.P_MEETING + Constants.P_RESTING)
+                    && d <= (Constants.P_MEETING + Constants.P_RESTING + Constants.P_PEEING)) {
                 nextStatus = WORK_STATUS.PEEING;
-            } else if (d > (Constants.MEETING_POSSIBILITY + Constants.RESTING_POSSIBILITY
-                    + Constants.PEEING_POSSIBILITY)
-                    && d <= (Constants.MEETING_POSSIBILITY + Constants.RESTING_POSSIBILITY
-                            + Constants.PEEING_POSSIBILITY + Constants.LIFTING_POSSIBILITY)) {
+            } else if (d > (Constants.P_MEETING + Constants.P_RESTING + Constants.P_PEEING)
+                    && d <= (Constants.P_MEETING + Constants.P_RESTING + Constants.P_PEEING + Constants.P_LIFTING)) {
                 nextStatus = WORK_STATUS.LIFTING;
             }
             Floor floor = company.getFloorList().get(e.getFloor());

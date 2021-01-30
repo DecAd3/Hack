@@ -1,12 +1,12 @@
 package model;
 
+import static util.Constants.ELEVATOR_AMOUNT;
 import static util.Constants.ELEVATOR_CAPACITY;
-import static util.Constants.ELEVATOR_NUM;
-import static util.Constants.EMPLOYEE_NUM_EACH_FLOOR;
+import static util.Constants.EMPLOYEE_IN_EACH_FLOOR;
 import static util.Constants.FLOOR_AMOUNT;
-import static util.Constants.MEETINGROOM_EACH_FLOOR;
-import static util.Constants.RESTROOM_EACH_FLOOR;
-import static util.Constants.TOILET_EACH_FLOOR;
+import static util.Constants.MEETING_ROOM_IN_EACH_FLOOR;
+import static util.Constants.RESTROOM_IN_EACH_FLOOR;
+import static util.Constants.TOILET_IN_EACH_FLOOR;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -102,8 +102,8 @@ public class Company {
     private Company() {
         floorList = new ArrayList<>();
         for (int i = 0; i < FLOOR_AMOUNT; i++) {
-            floorList.add(new Floor(i, EMPLOYEE_NUM_EACH_FLOOR, MEETINGROOM_EACH_FLOOR, TOILET_EACH_FLOOR,
-                    RESTROOM_EACH_FLOOR));
+            floorList.add(new Floor(i, EMPLOYEE_IN_EACH_FLOOR, MEETING_ROOM_IN_EACH_FLOOR, TOILET_IN_EACH_FLOOR,
+                    RESTROOM_IN_EACH_FLOOR));
         }
         meetingRoomPool = new ArrayList<>();
         toiletPool = new ArrayList<>();
@@ -116,7 +116,7 @@ public class Company {
             employeePool.addAll(floor.getEmployeeList());
         });
         this.elevatorList = new ArrayList<>();
-        for (int i = 0; i < ELEVATOR_NUM; i++) {
+        for (int i = 0; i < ELEVATOR_AMOUNT; i++) {
             elevatorList.add(new Elevator(0, i, ELEVATOR_CAPACITY));
         }
     }
