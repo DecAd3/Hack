@@ -167,10 +167,10 @@ public class ReworkService {
                 break;
         }
         if (needRelease) {
-            // 房间复位
+
             task.getActionRoom().setUseDuration(0);
             task.getActionRoom().setUseStatus(STATUS.FREE);
-            // 房间里的人复位
+
             String employeeNum = "";
             List<Employee> list = task.getActionRoom().getEmployeeList();
             try {

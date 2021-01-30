@@ -31,7 +31,7 @@ public class WorkTask {
 
     public void doTask() throws IOException {
         ReworkService rework = ReworkService.getInstance();
-        Company company = rework.getCompany();
+        Company company = Company.getInstance();
         LinkedBlockingQueue<WorkTask> queue = rework.getQueue();
         if (employee.getHealthyStatus() == HEALTHY_STATUS.ISOLATED) {
             queue.add(new WorkTask(employee, company.getFloorList().get(employee.gettFloor()).getOffice()));
@@ -39,4 +39,5 @@ public class WorkTask {
         }
 
     }
+
 }
