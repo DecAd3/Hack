@@ -197,7 +197,7 @@ public class ReworkService {
                 root = company.getEmployeePool().get(index);
             }
             root.setHealthyStatus(HEALTHY_STATUS.INFECTED);
-            logFile.write("The root isï¼š" + root.toString() + " Employee");
+            logFile.write("The root is: " + root.toString() + " Employee");
             logFile.write("\n");
             logFile.flush();
         }
