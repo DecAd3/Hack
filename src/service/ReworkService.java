@@ -79,21 +79,21 @@ public class ReworkService {
                 .size();
         logFile.write("---------");
         logFile.write("\n");
-        logFile.write("World Time：" + WORLD_TIME);
+        logFile.write("World Timeï¼š" + WORLD_TIME);
         logFile.write("\n");
         logFile.write("DAY " + (WORLD_TIME / 48));
         logFile.write("\n");
-        logFile.write("Office：" + OFFICE_AMOUNT);
+        logFile.write("Officeï¼š" + OFFICE_AMOUNT);
         logFile.write("\n");
-        logFile.write("Meeting Room：" + MEETING_AMOUNT);
+        logFile.write("Meeting Roomï¼š" + MEETING_AMOUNT);
         logFile.write("\n");
-        logFile.write("Rest Room：" + RESTING_AMOUNT);
+        logFile.write("Rest Roomï¼š" + RESTING_AMOUNT);
         logFile.write("\n");
-        logFile.write("Toilet：" + TOILETING_AMOUNT);
+        logFile.write("Toiletï¼š" + TOILETING_AMOUNT);
         logFile.write("\n");
-        logFile.write("INFECTED：" + INFECTED_AMOUNT);
+        logFile.write("INFECTEDï¼š" + INFECTED_AMOUNT);
         logFile.write("\n");
-        logFile.write("RISKY：" + RISKY_AMOUNT);
+        logFile.write("RISKYï¼š" + RISKY_AMOUNT);
         logFile.write("\n");
         logFile.write("---------");
         logFile.flush();
@@ -172,7 +172,7 @@ public class ReworkService {
                 e.printStackTrace();
             }
             if (!"".equals(employeeNum)) {
-                logFile.write(employeeNum + "退出" + task.getActionRoom().toString() + "回到了工位");
+                logFile.write(employeeNum + "Exit room " + task.getActionRoom().toString() + " back to office.");
                 logFile.write("\n");
                 logFile.flush();
             }
@@ -197,7 +197,7 @@ public class ReworkService {
                 root = company.getEmployeePool().get(index);
             }
             root.setHealthyStatus(HEALTHY_STATUS.INFECTED);
-            logFile.write("The root is：" + root.toString() + " Employee");
+            logFile.write("The root isï¼š" + root.toString() + " Employee");
             logFile.write("\n");
             logFile.flush();
         }
@@ -232,7 +232,7 @@ public class ReworkService {
                     try {
                         Thread.sleep(1000);
                         if (healthyNum == 0) {
-                            logFile.write("ALL INFECTED, TIME：" + WORLD_TIME % 48);
+                            logFile.write("ALL INFECTED, TIME: " + WORLD_TIME % 48);
                             logFile.flush();
 
                             Thread.sleep(10000000);
@@ -241,7 +241,7 @@ public class ReworkService {
                         e.printStackTrace();
                     }
                 }
-            }
+            }   
 
         }
     }

@@ -24,7 +24,6 @@ public class Constants {
     public final static int ELEVATOR_AMOUNT = 4;
     public final static int ELEVATOR_CAPACITY = 10;
     public final static int FLOOR_AMOUNT = 10;
-
     // Room Constants
     public final static int EMPLOYEE_IN_EACH_FLOOR = 200;
     public final static int MEETING_ROOM_IN_EACH_FLOOR = 6;

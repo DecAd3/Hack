@@ -75,7 +75,6 @@ public class Floor {
             default:
                 break;
         }
-
     }
 
     public Floor(int number, int employeeEachFloor, int meetingEachFloor, int toiletEachFloor, int restEachFloor) {

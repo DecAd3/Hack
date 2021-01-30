@@ -37,13 +37,13 @@ public class Company {
         return floorList;
     }
 
+
     public Room getFreeMeetingRoomPool() {
         return Helper.getFreeRoom(meetingRoomPool);
     }
 
     public Room getFreeRestroomPool() {
         return Helper.getFreeRoom(restroomPool);
-
     }
 
     public Room getFreeToiletPool() {

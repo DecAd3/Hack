@@ -72,16 +72,16 @@ public class WorkTask {
             Elevator elevator = (Elevator) actionRoom;
             employeeList = elevator.getEmployeeList();
         } else if (actionRoom instanceof Office) {
-            // 假设社畜在工位上是安全的
+            // Assume officers are safe at their workplace
             employee.setWorkStatus(WORK_STATUS.WORKING);
         }
         BufferedWriter logFile = rework.getBufferWritter();
         if (!(actionRoom instanceof Office)) {
-            logFile.write(employee.toString() + "号员工在" + actionRoom.toString());
+            logFile.write(employee.toString() + " is in " + actionRoom.toString());
             logFile.write("\n");
             logFile.flush();
         }
-        // 开始感染
+        // Begin infection
         String infectedEmployeeNum = "";
         if (employeeList != null) {
             if (employee.getHealthyStatus() == HEALTHY_STATUS.INFECTED) {
@@ -89,14 +89,15 @@ public class WorkTask {
                     if (employeeList.get(i).getHealthyStatus() != HEALTHY_STATUS.INFECTED) {
                         if (d <= Constants.P_INFECT) {
                             employeeList.get(i).setHealthyStatus(HEALTHY_STATUS.INFECTED);
-                            logFile.write(employeeList.get(i).toString() + "号员工被感染,感染源：" + employee.toString() + ",地点："
-                                    + actionRoom.toString());
+                            logFile.write(employeeList.get(i).toString() + " is infected, source of infection: "
+                                    + employee.toString() + ", location: " + actionRoom.toString());
                             logFile.write("\n");
                             logFile.flush();
                         } else {
                             employeeList.get(i).setHealthyStatus(HEALTHY_STATUS.RISKY);
-                            logFile.write(employeeList.get(i).toString() + "号员工亲密接触过感染者，存在风险, 亲密接触感染者："
-                                    + employee.toString() + ",地点：" + actionRoom.toString());
+                            logFile.write(employeeList.get(i).toString()
+                                    + "has close contact with infected persons thus become risky, the source of infection is"
+                                    + employee.toString() + ", location " + actionRoom.toString());
                             logFile.write("\n");
                             logFile.flush();
                         }
@@ -116,16 +117,17 @@ public class WorkTask {
             if (d <= Constants.P_INFECT) {
                 if (employee.getHealthyStatus() != HEALTHY_STATUS.INFECTED) {
                     employee.setHealthyStatus(HEALTHY_STATUS.INFECTED);
-                    logFile.write(
-                            employee.toString() + "号员工被感染,感染源：" + infectedEmployeeNum + ",地点：" + actionRoom.toString());
+                    logFile.write(employee.toString() + " is infected, source of infection: " + infectedEmployeeNum
+                            + ", location: " + actionRoom.toString());
                     logFile.write("\n");
                     logFile.flush();
                 }
             } else {
                 if (employee.getHealthyStatus() == HEALTHY_STATUS.HEALTHY) {
                     employee.setHealthyStatus(HEALTHY_STATUS.RISKY);
-                    logFile.write(employee.toString() + "号员工亲密接触过感染者，存在风险, 亲密接触感染者：" + infectedEmployeeNum + ",地点："
-                            + actionRoom.toString());
+                    logFile.write(employee.toString()
+                            + "has close contact with infected persons thus become risky, the source of infection is"
+                            + infectedEmployeeNum + ", location:" + actionRoom.toString());
                     logFile.write("\n");
                     logFile.flush();
                 }
@@ -158,6 +160,7 @@ public class WorkTask {
         Company company = Company.getInstance();
 
         if (e.getWorkStatus() == WORK_STATUS.WORKING) {
+<<<<<<< HEAD
 
             // can switch room, calculate the possibility
             WORK_STATUS nextStatus = getNextStatus();
@@ -165,13 +168,35 @@ public class WorkTask {
             Floor floor = company.getFloorList().get(e.getFloor());
 
             // use room in the same floor first (meeting room except)
+=======
+            // Allow to alter status, throw dice
+            WORK_STATUS nextStatus = WORK_STATUS.WORKING;
+            double d = Math.random();
+            if (d <= Constants.P_MEETING) {
+                nextStatus = WORK_STATUS.MEETING;
+            } else if (d > Constants.P_MEETING && d <= (Constants.P_MEETING + Constants.P_RESTING)) {
+                nextStatus = WORK_STATUS.RESTING;
+            } else if (d > (Constants.P_MEETING + Constants.P_RESTING)
+                    && d <= (Constants.P_MEETING + Constants.P_RESTING + Constants.P_PEEING)) {
+                nextStatus = WORK_STATUS.PEEING;
+            } else if (d > (Constants.P_MEETING + Constants.P_RESTING + Constants.P_PEEING)
+                    && d <= (Constants.P_MEETING + Constants.P_RESTING + Constants.P_PEEING + Constants.P_LIFTING)) {
+                nextStatus = WORK_STATUS.LIFTING;
+            }
+            Floor floor = company.getFloorList().get(e.getFloor());
+            // Apart from elevator, all choice of room type has a favor in the same floor
+>>>>>>> 4dda6c18725556cb6653a2c1518c1ad93d626146
             switch (nextStatus) {
                 case MEETING:
                     MeetingRoom freeMeetingRoom = (MeetingRoom) floor.getFreeMeetingRoom();
                     if (freeMeetingRoom == null) {
                         freeMeetingRoom = (MeetingRoom) company.getFreeMeetingRoomPool();
                         if (freeMeetingRoom == null) {
+<<<<<<< HEAD
                             // back to office
+=======
+                            // If no capacity available, return to the office area
+>>>>>>> 4dda6c18725556cb6653a2c1518c1ad93d626146
                             return company.getFloorList().get(e.getFloor()).getOffice();
                         }
                     }
