@@ -6,10 +6,6 @@ import static util.Constants.D_PEE;
 import static util.Constants.D_REST;
 import static util.Constants.LOG_PATH;
 import static util.Constants.P_ISOLATED;
-import static util.Constants.P_LIFTING;
-import static util.Constants.P_MEETING;
-import static util.Constants.P_PEEING;
-import static util.Constants.P_RESTING;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -25,13 +21,7 @@ import model.Company;
 import model.Employee;
 import model.Employee.HEALTHY_STATUS;
 import model.Employee.WORK_STATUS;
-import model.Floor;
-import model.RoomModel.Elevator;
-import model.RoomModel.MeetingRoom;
-import model.RoomModel.RestRoom;
-import model.RoomModel.Room;
 import model.RoomModel.Room.STATUS;
-import model.RoomModel.Toilet;
 
 public class ReworkService {
     private static ReworkService _instance = new ReworkService();
@@ -194,75 +184,7 @@ public class ReworkService {
         task.getActionRoom().setUseDuration(task.getActionRoom().getUseDuration() + 1);
     }
 
-    private Room switchStatus(Employee e, Room room) {
-        if (e.getWorkStatus() == WORK_STATUS.WORKING) {
 
-            WORK_STATUS nextStatus = WORK_STATUS.WORKING;
-            double d = Math.random();
-            if (d <= P_MEETING) {
-                nextStatus = WORK_STATUS.MEETING;
-            } else if (d > P_MEETING && d <= (P_MEETING + P_RESTING)) {
-                nextStatus = WORK_STATUS.RESTING;
-            } else if (d > (P_MEETING + P_RESTING)
-                    && d <= (P_MEETING + P_RESTING + P_PEEING)) {
-                nextStatus = WORK_STATUS.PEEING;
-            } else if (d > (P_MEETING + P_RESTING + P_PEEING)
-                    && d <= (P_MEETING + P_RESTING + P_PEEING + P_LIFTING)) {
-                nextStatus = WORK_STATUS.LIFTING;
-            }
-            Floor floor = company.getFloorList().get(e.getFloor());
-
-            switch (nextStatus) {
-                case MEETING:
-                    MeetingRoom freeMeetingRoom = floor.getFreeMeetingRoom();
-                    if (freeMeetingRoom == null) {
-                        freeMeetingRoom = company.getFreeMeetingRoomPool();
-                        if (freeMeetingRoom == null) {
-
-                            return company.getFloorList().get(e.getFloor()).getOffice();
-                        }
-                    }
-                    freeMeetingRoom.join(e);
-                    return freeMeetingRoom;
-                case RESTING:
-                    RestRoom freeRestroom = floor.getFreeRestRoom();
-                    if (freeRestroom == null) {
-                        freeRestroom = company.getFreeRestroomPool();
-                        if (freeRestroom == null) {
-                            return company.getFloorList().get(e.getFloor()).getOffice();
-                        }
-                    }
-                    freeRestroom.join(e);
-                    return freeRestroom;
-                case PEEING:
-                    Toilet freeToilet = floor.getFreeToilet();
-                    if (freeToilet == null) {
-                        freeToilet = company.getFreeToiletPool();
-                        if (freeToilet == null) {
-                            return company.getFloorList().get(e.getFloor()).getOffice();
-                        }
-                    }
-                    freeToilet.join(e);
-                    return freeToilet;
-                case LIFTING:
-                    Elevator freeElevator = company.getFreeElevator();
-                    if (freeElevator == null) {
-                        return company.getFloorList().get(e.getFloor()).getOffice();
-                    }
-                    freeElevator.join(e);
-                    return freeElevator;
-                default:
-                    return company.getFloorList().get(e.getFloor()).getOffice();
-            }
-        } else if (e.getWorkStatus() == WORK_STATUS.HOMING) {
-
-            e.setWorkStatus(WORK_STATUS.WORKING);
-            return company.getFloorList().get(e.getFloor()).getOffice();
-        } else {
-
-            return room;
-        }
-    }
 
     public void rework(int begin) throws IOException {
         // randomly pick some employees to be the roots

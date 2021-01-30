@@ -6,13 +6,13 @@ import static util.Constants.ROOM_MIN_CAPACITY;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-import java.util.concurrent.atomic.AtomicReference;
 
+import helper.Helper;
 import model.RoomModel.MeetingRoom;
 import model.RoomModel.Office;
 import model.RoomModel.RestRoom;
+import model.RoomModel.Room;
 import model.RoomModel.Room.ROOM_TYPE;
-import model.RoomModel.Room.STATUS;
 import model.RoomModel.Toilet;
 
 public class Floor {
@@ -20,9 +20,9 @@ public class Floor {
     private int floorNumber;
     private List<Employee> employeeList;
 
-    private List<MeetingRoom> meetingroomList;
-    private List<Toilet> toiletList;
-    private List<RestRoom> restroomList;
+    private List<Room> meetingRoomList;
+    private List<Room> toiletList;
+    private List<Room> restroomList;
     private Office office;
 
     public int getNumber() {
@@ -33,15 +33,15 @@ public class Floor {
         return employeeList;
     }
 
-    public List<MeetingRoom> getMeetingroomList() {
-        return meetingroomList;
+    public List<Room> getMeetingRoomList() {
+        return meetingRoomList;
     }
 
-    public List<Toilet> getToiletList() {
+    public List<Room> getToiletList() {
         return toiletList;
     }
 
-    public List<RestRoom> getRestroomList() {
+    public List<Room> getRestroomList() {
         return restroomList;
     }
 
@@ -55,9 +55,9 @@ public class Floor {
                 + ROOM_MIN_CAPACITY;
         switch (type) {
             case MeetingRoom:
-                this.meetingroomList = new ArrayList<>();
+                this.meetingRoomList = new ArrayList<>();
                 for (int i = 0; i < amount; i++) {
-                    meetingroomList.add(new MeetingRoom(floor, i, capacity));
+                    meetingRoomList.add(new MeetingRoom(floor, i, capacity));
                 }
                 break;
             case Toilet:
@@ -96,36 +96,18 @@ public class Floor {
         this.office = new Office(number, 0, 1);
     }
 
-    public MeetingRoom getFreeMeetingRoom() {
-        AtomicReference<MeetingRoom> rooms = new AtomicReference<MeetingRoom>();
-        meetingroomList.forEach(m -> {
-            if (m.getUseStatus() == STATUS.FREE
-                    || (m.getUseStatus() == STATUS.IN_USE && m.getEmployeeList().size() < m.getCapacity())) {
-                rooms.set(m);
-            }
-        });
-        return rooms.get();
+    public Room getFreeMeetingRoom() {
+        return Helper.getFreeRoom(meetingRoomList);
+
     }
 
-    public RestRoom getFreeRestRoom() {
-        AtomicReference<RestRoom> rooms = new AtomicReference<RestRoom>();
-        restroomList.forEach(m -> {
-            if (m.getUseStatus() == STATUS.FREE
-                    || (m.getUseStatus() == STATUS.IN_USE && m.getEmployeeList().size() < m.getCapacity())) {
-                rooms.set(m);
-            }
-        });
-        return rooms.get();
+    public Room getFreeRestRoom() {
+        return Helper.getFreeRoom(restroomList);
+
     }
 
-    public Toilet getFreeToilet() {
-        AtomicReference<Toilet> rooms = new AtomicReference<Toilet>();
-        toiletList.forEach(m -> {
-            if (m.getUseStatus() == STATUS.FREE
-                    || (m.getUseStatus() == STATUS.IN_USE && m.getEmployeeList().size() < m.getCapacity())) {
-                rooms.set(m);
-            }
-        });
-        return rooms.get();
+    public Room getFreeToilet() {
+        return Helper.getFreeRoom(toiletList);
+
     }
 }

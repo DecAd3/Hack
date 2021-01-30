@@ -10,13 +10,10 @@ import static util.Constants.TOILET_IN_EACH_FLOOR;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicReference;
 
+import helper.Helper;
 import model.RoomModel.Elevator;
-import model.RoomModel.MeetingRoom;
-import model.RoomModel.RestRoom;
-import model.RoomModel.Room.STATUS;
-import model.RoomModel.Toilet;
+import model.RoomModel.Room;
 
 public class Company {
     private static Company _instance = new Company();
@@ -26,13 +23,13 @@ public class Company {
     }
 
     private List<Floor> floorList;
-    private List<MeetingRoom> meetingRoomPool;
-    private List<Toilet> toiletPool;
-    private List<RestRoom> restroomPool;
+    private List<Room> meetingRoomPool;
+    private List<Room> toiletPool;
+    private List<Room> restroomPool;
     private List<Employee> employeePool;
-    private List<Elevator> elevatorList;
+    private List<Room> elevatorList;
 
-    public List<Elevator> getElevatorList() {
+    public List<Room> getElevatorList() {
         return elevatorList;
     }
 
@@ -40,58 +37,34 @@ public class Company {
         return floorList;
     }
 
-    public MeetingRoom getFreeMeetingRoomPool() {
-        AtomicReference<MeetingRoom> ret = new AtomicReference<MeetingRoom>();
-        meetingRoomPool.forEach(m -> {
-            if (m.getUseStatus() == STATUS.FREE
-                    || (m.getUseStatus() == STATUS.IN_USE && m.getEmployeeList().size() < m.getCapacity())) {
-                ret.set(m);
-            }
-        });
-        return ret.get();
+    public Room getFreeMeetingRoomPool() {
+        return Helper.getFreeRoom(meetingRoomPool);
     }
 
-    public RestRoom getFreeRestroomPool() {
-        AtomicReference<RestRoom> rooms = new AtomicReference<RestRoom>();
-        restroomPool.forEach(m -> {
-            if (m.getUseStatus() == STATUS.FREE
-                    || (m.getUseStatus() == STATUS.IN_USE && m.getEmployeeList().size() < m.getCapacity())) {
-            }
-        });
-        return rooms.get();
+    public Room getFreeRestroomPool() {
+        return Helper.getFreeRoom(restroomPool);
+
     }
 
-    public Toilet getFreeToiletPool() {
-        AtomicReference<Toilet> rooms = new AtomicReference<Toilet>();
-        toiletPool.forEach(m -> {
-            if (m.getUseStatus() == STATUS.FREE
-                    || (m.getUseStatus() == STATUS.IN_USE && m.getEmployeeList().size() < m.getCapacity())) {
-                rooms.set(m);
-            }
-        });
-        return rooms.get();
+    public Room getFreeToiletPool() {
+        return Helper.getFreeRoom(toiletPool);
+
     }
 
-    public Elevator getFreeElevator() {
-        AtomicReference<Elevator> elevators = new AtomicReference<Elevator>();
-        elevatorList.forEach(e -> {
-            if (e.getUseStatus() == STATUS.FREE
-                    || (e.getUseStatus() == STATUS.IN_USE && e.getEmployeeList().size() < e.getCapacity())) {
-                elevators.set(e);
-            }
-        });
-        return elevators.get();
+    public Room getFreeElevator() {
+        return Helper.getFreeRoom(elevatorList);
+
     }
 
-    public List<MeetingRoom> getMeetingRoomPool() {
+    public List<Room> getMeetingRoomPool() {
         return meetingRoomPool;
     }
 
-    public List<Toilet> getToiletPool() {
+    public List<Room> getToiletPool() {
         return toiletPool;
     }
 
-    public List<RestRoom> getRestRoomPool() {
+    public List<Room> getRestRoomPool() {
         return restroomPool;
     }
 
@@ -110,7 +83,7 @@ public class Company {
         restroomPool = new ArrayList<>();
         employeePool = new ArrayList<>();
         floorList.forEach(floor -> {
-            meetingRoomPool.addAll(floor.getMeetingroomList());
+            meetingRoomPool.addAll(floor.getMeetingRoomList());
             toiletPool.addAll(floor.getToiletList());
             restroomPool.addAll(floor.getRestroomList());
             employeePool.addAll(floor.getEmployeeList());

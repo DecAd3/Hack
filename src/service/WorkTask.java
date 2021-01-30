@@ -57,8 +57,8 @@ public class WorkTask {
         List<Employee> employeeList = new ArrayList<>();
         if (actionRoom instanceof MeetingRoom) {
             employee.setWorkStatus(WORK_STATUS.MEETING);
-            MeetingRoom meetingroom = (MeetingRoom) actionRoom;
-            employeeList = meetingroom.getEmployeeList();
+            MeetingRoom meetingRoom = (MeetingRoom) actionRoom;
+            employeeList = meetingRoom.getEmployeeList();
         } else if (actionRoom instanceof Toilet) {
             employee.setWorkStatus(WORK_STATUS.PEEING);
             Toilet toilet = (Toilet) actionRoom;
@@ -157,9 +157,9 @@ public class WorkTask {
             // 除了电梯类型外，其他房间都优先选择本层
             switch (nextStatus) {
                 case MEETING:
-                    MeetingRoom freeMeetingRoom = floor.getFreeMeetingRoom();
+                    MeetingRoom freeMeetingRoom = (MeetingRoom) floor.getFreeMeetingRoom();
                     if (freeMeetingRoom == null) {
-                        freeMeetingRoom = company.getFreeMeetingRoomPool();
+                        freeMeetingRoom = (MeetingRoom) company.getFreeMeetingRoomPool();
                         if (freeMeetingRoom == null) {
                             // 无可用房间，返回办公区
                             return company.getFloorList().get(e.getFloor()).getOffice();
@@ -168,9 +168,9 @@ public class WorkTask {
                     freeMeetingRoom.join(e);
                     return freeMeetingRoom;
                 case RESTING:
-                    RestRoom freeRestroom = floor.getFreeRestRoom();
+                    RestRoom freeRestroom = (RestRoom) floor.getFreeRestRoom();
                     if (freeRestroom == null) {
-                        freeRestroom = company.getFreeRestroomPool();
+                        freeRestroom = (RestRoom) company.getFreeRestroomPool();
                         if (freeRestroom == null) {
                             return company.getFloorList().get(e.getFloor()).getOffice();
                         }
@@ -178,9 +178,9 @@ public class WorkTask {
                     freeRestroom.join(e);
                     return freeRestroom;
                 case PEEING:
-                    Toilet freeToilet = floor.getFreeToilet();
+                    Toilet freeToilet = (Toilet) floor.getFreeToilet();
                     if (freeToilet == null) {
-                        freeToilet = company.getFreeToiletPool();
+                        freeToilet = (Toilet) company.getFreeToiletPool();
                         if (freeToilet == null) {
                             return company.getFloorList().get(e.getFloor()).getOffice();
                         }
@@ -188,7 +188,7 @@ public class WorkTask {
                     freeToilet.join(e);
                     return freeToilet;
                 case LIFTING:
-                    Elevator freeElevator = company.getFreeElevator();
+                    Elevator freeElevator = (Elevator) company.getFreeElevator();
                     if (freeElevator == null) {
                         return company.getFloorList().get(e.getFloor()).getOffice();
                     }
