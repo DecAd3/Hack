@@ -7,6 +7,6 @@ public class Toilet extends Room {
 
     @Override
     public String toString() {
-        return floor + "F-" + number + "-MeetingRoom";
+        return floor + "F-" + number + "-Toilet";
     }
 }

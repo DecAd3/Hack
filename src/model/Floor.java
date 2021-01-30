@@ -6,11 +6,13 @@ import static util.Constants.ROOM_MIN_CAPACITY;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.concurrent.atomic.AtomicReference;
 
 import model.RoomModel.MeetingRoom;
 import model.RoomModel.Office;
 import model.RoomModel.RestRoom;
 import model.RoomModel.Room.ROOM_TYPE;
+import model.RoomModel.Room.STATUS;
 import model.RoomModel.Toilet;
 
 public class Floor {
@@ -91,6 +93,39 @@ public class Floor {
         // init rest room
         initRooms(ROOM_TYPE.RestRoom, number, restEachFloor);
 
-        this.office = new Office();
+        this.office = new Office(number, 0, 1);
+    }
+
+    public MeetingRoom getFreeMeetingRoom() {
+        AtomicReference<MeetingRoom> rooms = new AtomicReference<MeetingRoom>();
+        meetingroomList.forEach(m -> {
+            if (m.getUseStatus() == STATUS.FREE
+                    || (m.getUseStatus() == STATUS.IN_USE && m.getEmployeeList().size() < m.getCapacity())) {
+                rooms.set(m);
+            }
+        });
+        return rooms.get();
+    }
+
+    public RestRoom getFreeRestRoom() {
+        AtomicReference<RestRoom> rooms = new AtomicReference<RestRoom>();
+        restroomList.forEach(m -> {
+            if (m.getUseStatus() == STATUS.FREE
+                    || (m.getUseStatus() == STATUS.IN_USE && m.getEmployeeList().size() < m.getCapacity())) {
+                rooms.set(m);
+            }
+        });
+        return rooms.get();
+    }
+
+    public Toilet getFreeToilet() {
+        AtomicReference<Toilet> rooms = new AtomicReference<Toilet>();
+        toiletList.forEach(m -> {
+            if (m.getUseStatus() == STATUS.FREE
+                    || (m.getUseStatus() == STATUS.IN_USE && m.getEmployeeList().size() < m.getCapacity())) {
+                rooms.set(m);
+            }
+        });
+        return rooms.get();
     }
 }
