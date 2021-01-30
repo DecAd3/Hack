@@ -43,11 +43,31 @@ public class Employee {
     }
 
     public enum WORK_STATUS {
-        HOMING, WORKING, RESTING, MEETING, PEEING, LIFTING
+        HOMING(0), WORKING(1), RESTING(2), MEETING(3), PEEING(4), LIFTING(5);
+
+        private final int value;
+
+        WORK_STATUS(int value) {
+            this.value = value;
+        }
+
+        public int getValue() {
+            return value;
+        }
     }
 
     public enum HEALTHY_STATUS {
-        HEALTHY, RISKY, INFECTED, ISOLATED
+        HEALTHY(0), RISKY(1), INFECTED(2), ISOLATED(3);
+
+        private final int value;
+
+        HEALTHY_STATUS(int value) {
+            this.value = value;
+        }
+
+        public int getValue() {
+            return value;
+        }
     }
 
 }
