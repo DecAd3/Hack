@@ -228,7 +228,7 @@ public class ReworkService {
 
                     int healthyNum = checkAll();
                     try {
-                        Thread.sleep(1000);
+                        // Thread.sleep(1000);
                         if (healthyNum == 0) {
                             logFile.write("ALL INFECTED, TIME: " + WORLD_TIME % 48);
                             logFile.flush();

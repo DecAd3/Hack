@@ -1,6 +1,7 @@
 package debugPanel;
 
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.TimerTask;
 import java.util.stream.Collectors;
 
@@ -9,7 +10,6 @@ import model.Employee;
 import model.Employee.HEALTHY_STATUS;
 import model.Employee.WORK_STATUS;
 import service.ReworkService;
-import util.GraphicsConstants;
 
 public class OutputPanel implements Runnable {
     private static Company company = Company.getInstance();
@@ -45,23 +45,11 @@ public class OutputPanel implements Runnable {
                 .filter(employee -> employee.getHealthyStatus() == HEALTHY_STATUS.ISOLATED).collect(Collectors.toList())
                 .size();
 
-        // Detail
-        Map<String, Employee.HEALTHY_STATUS> employeeMap = company.getEmployeePool().stream()
-                .collect(Collectors.toMap(Employee::toString, Employee::getHealthyStatus));
-        for (GraphicsConstants.GraphicsFloor f : GraphicsConstants.floors) {
-
-            for (GraphicsConstants.WorkBay bay : f.getWorkBayList()) {
-                if (employeeMap.get(bay.toString()) == HEALTHY_STATUS.HEALTHY) {
-                    int a = bay.getFloor() + bay.getNumber();
-                } else if (employeeMap.get(bay.toString()) == HEALTHY_STATUS.RISKY) {
-
-                } else if (employeeMap.get(bay.toString()) == HEALTHY_STATUS.INFECTED) {
-
-                } else if (employeeMap.get(bay.toString()) == HEALTHY_STATUS.ISOLATED) {
-
-                }
-
-            }
+        List<Employee> allEmployee = company.getEmployeePool();
+        List<Integer> statusArray = new ArrayList<>();
+        for (int i = 0; i < allEmployee.size(); i++) {
+            int status = allEmployee.get(i).getHealthyStatus().getValue();
+            statusArray.add(status);
         }
 
     }
