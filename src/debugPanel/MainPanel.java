@@ -27,6 +27,38 @@ public class MainPanel extends JPanel implements Runnable {
         private static Company company = Company.getInstance();
         private long WORLD_TIME = ReworkService.getInstance().getWorldTime();
 
+        public void info() {
+                WORLD_TIME = ReworkService.getInstance().getWorldTime();
+                int OFFICE_AMOUNT = company.getEmployeePool().stream()
+                                .filter(employee -> employee.getWorkStatus() == WORK_STATUS.WORKING)
+                                .collect(Collectors.toList()).size();
+                int MEETING_AMOUNT = company.getEmployeePool().stream()
+                                .filter(employee -> employee.getWorkStatus() == WORK_STATUS.MEETING)
+                                .collect(Collectors.toList()).size();
+                int RESTING_AMOUNT = company.getEmployeePool().stream()
+                                .filter(employee -> employee.getWorkStatus() == WORK_STATUS.RESTING)
+                                .collect(Collectors.toList()).size();
+                int TOILETING_AMOUNT = company.getEmployeePool().stream()
+                                .filter(employee -> employee.getWorkStatus() == WORK_STATUS.PEEING)
+                                .collect(Collectors.toList()).size();
+                int INFECTED_AMOUNT = company.getEmployeePool().stream()
+                                .filter(employee -> employee.getHealthyStatus() == HEALTHY_STATUS.INFECTED)
+                                .collect(Collectors.toList()).size();
+                int RISKY_AMOUNT = company.getEmployeePool().stream()
+                                .filter(employee -> employee.getHealthyStatus() == HEALTHY_STATUS.RISKY)
+                                .collect(Collectors.toList()).size();
+                System.out.println("---------");
+                System.out.println("World Time:" + WORLD_TIME);
+                System.out.println("The " + (WORLD_TIME / 6 / 8) + "th day return to work");
+                System.out.println("People in office area:" + OFFICE_AMOUNT);
+                System.out.println("People in meeting room:" + MEETING_AMOUNT);
+                System.out.println("People in restroom:" + RESTING_AMOUNT);
+                System.out.println("People in toilet:" + TOILETING_AMOUNT);
+                System.out.println("Infected people:" + INFECTED_AMOUNT);
+                System.out.println("Risky people:" + RISKY_AMOUNT);
+                System.out.println("---------");
+        }
+
         public MainPanel() {
                 super();
                 this.setBackground(new Color(0xFFFAFA));
@@ -51,8 +83,13 @@ public class MainPanel extends JPanel implements Runnable {
                                 } else if (employeeMap.get(bay.toString()) == HEALTHY_STATUS.ISOLATED) {
                                         g.setColor(new Color(0x000000));
                                 }
-                                g.fillRect(bay.getX1(), bay.getY1(), bay.getX2() - bay.getX1(),
-                                                bay.getY2() - bay.getY1());
+                                int x = (bay.getX2() + bay.getX1()) / 2;
+                                int y = (bay.getY2() + bay.getY1()) / 2;
+                                int r = 10;
+                                g.fillOval(x, y, r, r);
+
+                                // g.fillRect(bay.getX1(), bay.getY1(), bay.getX2() - bay.getX1(),
+                                // bay.getY2() - bay.getY1());
                         }
                 }
                 int OFFICE_AMOUNT = company.getEmployeePool().stream()
@@ -82,26 +119,26 @@ public class MainPanel extends JPanel implements Runnable {
                 int ISOLATED_AMOUNT = company.getEmployeePool().stream()
                                 .filter(employee -> employee.getHealthyStatus() == HEALTHY_STATUS.ISOLATED)
                                 .collect(Collectors.toList()).size();
-                Font font_1 = new Font("Arial", Font.PLAIN, 20);
-                g.setFont(font_1);
+                Font font = new Font("Arial", Font.PLAIN, 20);
+                g.setFont(font);
                 g.setColor(new Color(0xff0000));
                 g.drawString("The " + (WORLD_TIME / 6 / 8) + " th day return to work", EACH_FLOOR_WIDTH + 30, 50);
-                Font font_2 = new Font("Times New Roman", Font.PLAIN, 15);
-                g.setFont(font_2);
+                Font f3 = new Font("Times New Roman", Font.PLAIN, 15);
+                g.setFont(f3);
                 g.setColor(new Color(0x99004c));
-                g.drawString("People in office area: " + OFFICE_AMOUNT, EACH_FLOOR_WIDTH + 30, 100);
-                g.drawString("People in meeting room: " + MEETING_AMOUNT, EACH_FLOOR_WIDTH + 30, 150);
-                g.drawString("People in restroom: " + RESTING_AMOUNT, EACH_FLOOR_WIDTH + 30, 200);
-                g.drawString("People in toilet: " + TOILETING_AMOUNT, EACH_FLOOR_WIDTH + 30, 250);
-                g.drawString("People in elevator: " + ELEVATOR_AMOUNT, EACH_FLOOR_WIDTH + 30, 300);
+                g.drawString("People in office area:" + OFFICE_AMOUNT, EACH_FLOOR_WIDTH + 30, 100);
+                g.drawString("People in meeting room:" + MEETING_AMOUNT, EACH_FLOOR_WIDTH + 30, 150);
+                g.drawString("People in restroom:" + RESTING_AMOUNT, EACH_FLOOR_WIDTH + 30, 200);
+                g.drawString("People in toilet:" + TOILETING_AMOUNT, EACH_FLOOR_WIDTH + 30, 250);
+                g.drawString("People in elevator:" + ELEVATOR_AMOUNT, EACH_FLOOR_WIDTH + 30, 300);
                 g.setColor(new Color(0x00ff00));
-                g.drawString("Healthy people: " + HEALTHY_AMOUNT, EACH_FLOOR_WIDTH + 30, 350);
+                g.drawString("Healthy people：" + HEALTHY_AMOUNT, EACH_FLOOR_WIDTH + 30, 350);
                 g.setColor(new Color(0x0000ff));
-                g.drawString("Risky people: " + RISKY_AMOUNT, EACH_FLOOR_WIDTH + 30, 400);
+                g.drawString("Risky people:" + RISKY_AMOUNT, EACH_FLOOR_WIDTH + 30, 400);
                 g.setColor(new Color(0xff0000));
-                g.drawString("Infected people: " + INFECTED_AMOUNT, EACH_FLOOR_WIDTH + 30, 450);
+                g.drawString("Infected people:" + INFECTED_AMOUNT, EACH_FLOOR_WIDTH + 30, 450);
                 g.setColor(new Color(0x000000));
-                g.drawString("Quarantined people: " + ISOLATED_AMOUNT, EACH_FLOOR_WIDTH + 30, 500);
+                g.drawString("Quarantined people:" + ISOLATED_AMOUNT, EACH_FLOOR_WIDTH + 30, 500);
         }
 
         public java.util.Timer timer = new java.util.Timer();

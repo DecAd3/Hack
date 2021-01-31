@@ -64,7 +64,7 @@ public class OutputPanel implements Runnable {
     class MyTimerTask extends TimerTask {
         @Override
         public void run() {
-            checkWorldTime()
+            checkWorldTime();
         }
     }
 

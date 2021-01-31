@@ -11,9 +11,10 @@ public class Main {
     }
 
     private static void initFrame() {
+        JFrame frame = new JFrame();
         MainPanel p = new MainPanel();
         Thread panelThread = new Thread(p);
-        JFrame frame = new JFrame();
+
         frame.add(p);
         frame.setSize(1200, 1200);
         frame.setLocationRelativeTo(null);
