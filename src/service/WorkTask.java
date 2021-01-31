@@ -51,9 +51,9 @@ public class WorkTask {
         }
 
         Room room = null;
-        final double d = Math.random();
+        final double rand_double = Math.random();// 0-1
 
-        AtomicBoolean isInfected = new AtomicBoolean(false);
+        AtomicBoolean isExposed = new AtomicBoolean(false);
         List<Employee> employeeList = new ArrayList<>();
         if (actionRoom instanceof MeetingRoom) {
             employee.setWorkStatus(WORK_STATUS.MEETING);
@@ -75,6 +75,7 @@ public class WorkTask {
             // Assume officers are safe at their workplace
             employee.setWorkStatus(WORK_STATUS.WORKING);
         }
+
         BufferedWriter logFile = rework.getBufferWritter();
         if (!(actionRoom instanceof Office)) {
             logFile.write(employee.toString() + " is in " + actionRoom.toString());
@@ -87,7 +88,7 @@ public class WorkTask {
             if (employee.getHealthyStatus() == HEALTHY_STATUS.INFECTED) {
                 for (int i = 0; i < employeeList.size(); i++) {
                     if (employeeList.get(i).getHealthyStatus() != HEALTHY_STATUS.INFECTED) {
-                        if (d <= Constants.P_INFECT) {
+                        if (rand_double <= Constants.P_INFECT) {
                             employeeList.get(i).setHealthyStatus(HEALTHY_STATUS.INFECTED);
                             logFile.write(employeeList.get(i).toString() + " is infected, source of infection: "
                                     + employee.toString() + ", location: " + actionRoom.toString());
@@ -107,14 +108,14 @@ public class WorkTask {
                 for (int i = 0; i < employeeList.size(); i++) {
                     if (employeeList.get(i).getHealthyStatus() == HEALTHY_STATUS.INFECTED) {
                         infectedEmployeeNum = employeeList.get(i).toString();
-                        isInfected.set(true);
+                        isExposed.set(true);
                         break;
                     }
                 }
             }
         }
-        if (isInfected.get()) {
-            if (d <= Constants.P_INFECT) {
+        if (isExposed.get()) {
+            if (rand_double <= Constants.P_INFECT) {
                 if (employee.getHealthyStatus() != HEALTHY_STATUS.INFECTED) {
                     employee.setHealthyStatus(HEALTHY_STATUS.INFECTED);
                     logFile.write(employee.toString() + " is infected, source of infection: " + infectedEmployeeNum
@@ -140,16 +141,17 @@ public class WorkTask {
 
     private WORK_STATUS getNextStatus() {
         WORK_STATUS nextStatus = WORK_STATUS.WORKING;
-        double rand_int = Math.random();
-        if (rand_int <= Constants.P_MEETING) {
+        double rand_double = Math.random();// 0-1
+        if (rand_double <= Constants.P_MEETING) {
             nextStatus = WORK_STATUS.MEETING;
-        } else if (rand_int > Constants.P_MEETING && rand_int <= (Constants.P_MEETING + Constants.P_RESTING)) {
+        } else if (rand_double > Constants.P_MEETING && rand_double <= (Constants.P_MEETING + Constants.P_RESTING)) {
             nextStatus = WORK_STATUS.RESTING;
-        } else if (rand_int > (Constants.P_MEETING + Constants.P_RESTING)
-                && rand_int <= (Constants.P_MEETING + Constants.P_RESTING + Constants.P_PEEING)) {
+        } else if (rand_double > (Constants.P_MEETING + Constants.P_RESTING)
+                && rand_double <= (Constants.P_MEETING + Constants.P_RESTING + Constants.P_PEEING)) {
             nextStatus = WORK_STATUS.PEEING;
-        } else if (rand_int > (Constants.P_MEETING + Constants.P_RESTING + Constants.P_PEEING)
-                && rand_int <= (Constants.P_MEETING + Constants.P_RESTING + Constants.P_PEEING + Constants.P_LIFTING)) {
+        } else if (rand_double > (Constants.P_MEETING + Constants.P_RESTING + Constants.P_PEEING)
+                && rand_double <= (Constants.P_MEETING + Constants.P_RESTING + Constants.P_PEEING
+                        + Constants.P_LIFTING)) {
             nextStatus = WORK_STATUS.LIFTING;
         }
         return nextStatus;

@@ -19,11 +19,13 @@ public class Constants {
     public final static int D_LIFT = 1;
 
     // Constants
-    public final static int ROOM_MAX_CAPACITY = 10;
-    public final static int ROOM_MIN_CAPACITY = 3;
+    public final static int MEETING_ROOM_CAPACITY = 8;
+    public final static int REST_ROOM_CAPACITY = 8;
+    public final static int TOILET_CAPACITY = 4;
     public final static int ELEVATOR_AMOUNT = 4;
     public final static int ELEVATOR_CAPACITY = 10;
     public final static int FLOOR_AMOUNT = 10;
+
     // Room Constants
     public final static int EMPLOYEE_IN_EACH_FLOOR = 200;
     public final static int MEETING_ROOM_IN_EACH_FLOOR = 6;

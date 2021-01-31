@@ -1,7 +1,8 @@
 package model;
 
-import static util.Constants.ROOM_MAX_CAPACITY;
-import static util.Constants.ROOM_MIN_CAPACITY;
+import static util.Constants.MEETING_ROOM_CAPACITY;
+import static util.Constants.REST_ROOM_CAPACITY;
+import static util.Constants.TOILET_CAPACITY;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -50,29 +51,27 @@ public class Floor {
     }
 
     private void initRooms(ROOM_TYPE type, int floor, int amount) {
-        // generate random capacity
-        int capacity = random.nextInt(ROOM_MAX_CAPACITY) % (ROOM_MAX_CAPACITY - ROOM_MIN_CAPACITY + 1)
-                + ROOM_MIN_CAPACITY;
+
         switch (type) {
             case MeetingRoom:
                 this.meetingRoomList = new ArrayList<>();
                 for (int i = 0; i < amount; i++) {
-                    meetingRoomList.add(new MeetingRoom(floor, i, capacity));
+                    meetingRoomList.add(new MeetingRoom(floor, i, MEETING_ROOM_CAPACITY));
                 }
                 break;
             case Toilet:
                 this.toiletList = new ArrayList<>();
                 for (int i = 0; i < amount; i++) {
-                    toiletList.add(new Toilet(floor, i, capacity));
+                    toiletList.add(new Toilet(floor, i, REST_ROOM_CAPACITY));
                 }
                 break;
             case RestRoom:
                 this.restroomList = new ArrayList<>();
                 for (int i = 0; i < amount; i++) {
-                    restroomList.add(new RestRoom(floor, i, capacity));
+                    restroomList.add(new RestRoom(floor, i, TOILET_CAPACITY));
                 }
                 break;
-            default:
+            default:// never use default
                 break;
         }
     }
@@ -92,7 +91,10 @@ public class Floor {
         // init rest room
         initRooms(ROOM_TYPE.RestRoom, number, restEachFloor);
 
+        // every employee has an office
+        // we only use one office stand for it in the same floor
         this.office = new Office(number, 0, 1);
+
     }
 
     public Room getFreeMeetingRoom() {

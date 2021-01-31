@@ -1,4 +1,4 @@
-package debugPannel;
+package debugPanel;
 
 import static util.GraphicsConstants.EACH_FLOOR_WIDTH;
 
@@ -20,40 +20,12 @@ import util.GraphicsConstants;
 
 public class MainPanel extends JPanel implements Runnable {
 
+        /**
+        *
+        */
+        private static final long serialVersionUID = 1L;
         private static Company company = Company.getInstance();
         private long WORLD_TIME = ReworkService.getInstance().getWorldTime();
-
-        public void info() {
-                WORLD_TIME = ReworkService.getInstance().getWorldTime();
-                int OFFICE_AMOUNT = company.getEmployeePool().stream()
-                                .filter(employee -> employee.getWorkStatus() == WORK_STATUS.WORKING)
-                                .collect(Collectors.toList()).size();
-                int MEETING_AMOUNT = company.getEmployeePool().stream()
-                                .filter(employee -> employee.getWorkStatus() == WORK_STATUS.MEETING)
-                                .collect(Collectors.toList()).size();
-                int RESTING_AMOUNT = company.getEmployeePool().stream()
-                                .filter(employee -> employee.getWorkStatus() == WORK_STATUS.RESTING)
-                                .collect(Collectors.toList()).size();
-                int TOILETING_AMOUNT = company.getEmployeePool().stream()
-                                .filter(employee -> employee.getWorkStatus() == WORK_STATUS.PEEING)
-                                .collect(Collectors.toList()).size();
-                int INFECTED_AMOUNT = company.getEmployeePool().stream()
-                                .filter(employee -> employee.getHealthyStatus() == HEALTHY_STATUS.INFECTED)
-                                .collect(Collectors.toList()).size();
-                int RISKY_AMOUNT = company.getEmployeePool().stream()
-                                .filter(employee -> employee.getHealthyStatus() == HEALTHY_STATUS.RISKY)
-                                .collect(Collectors.toList()).size();
-                System.out.println("---------");
-                System.out.println("World Time:" + WORLD_TIME);
-                System.out.println("The " + (WORLD_TIME / 6 / 8) + "th day return to work");
-                System.out.println("People in office area:" + OFFICE_AMOUNT);
-                System.out.println("People in meeting room:" + MEETING_AMOUNT);
-                System.out.println("People in restroom:" + RESTING_AMOUNT);
-                System.out.println("People in toilet:" + TOILETING_AMOUNT);
-                System.out.println("Infected people:" + INFECTED_AMOUNT);
-                System.out.println("Risky people:" + RISKY_AMOUNT);
-                System.out.println("---------");
-        }
 
         public MainPanel() {
                 super();
@@ -66,7 +38,7 @@ public class MainPanel extends JPanel implements Runnable {
                 super.paint(g);
                 Map<String, Employee.HEALTHY_STATUS> employeeMap = company.getEmployeePool().stream()
                                 .collect(Collectors.toMap(Employee::toString, Employee::getHealthyStatus));
-                for (GraphicsConstants.Floor f : GraphicsConstants.floors) {
+                for (GraphicsConstants.GraphicsFloor f : GraphicsConstants.floors) {
                         g.setColor(Color.black);
                         g.drawLine(f.getX1(), f.getY1(), f.getX2(), f.getY1());
                         for (GraphicsConstants.WorkBay bay : f.getWorkBayList()) {
@@ -110,12 +82,12 @@ public class MainPanel extends JPanel implements Runnable {
                 int ISOLATED_AMOUNT = company.getEmployeePool().stream()
                                 .filter(employee -> employee.getHealthyStatus() == HEALTHY_STATUS.ISOLATED)
                                 .collect(Collectors.toList()).size();
-                Font font = new Font("Arial", Font.PLAIN, 20);
-                g.setFont(font);
+                Font font_1 = new Font("Arial", Font.PLAIN, 20);
+                g.setFont(font_1);
                 g.setColor(new Color(0xff0000));
                 g.drawString("The " + (WORLD_TIME / 6 / 8) + " th day return to work", EACH_FLOOR_WIDTH + 30, 50);
-                Font f3 = new Font("Times New Roman", Font.PLAIN, 15);
-                g.setFont(f3);
+                Font font_2 = new Font("Times New Roman", Font.PLAIN, 15);
+                g.setFont(font_2);
                 g.setColor(new Color(0x99004c));
                 g.drawString("People in office area:" + OFFICE_AMOUNT, EACH_FLOOR_WIDTH + 30, 100);
                 g.drawString("People in meeting room:" + MEETING_AMOUNT, EACH_FLOOR_WIDTH + 30, 150);

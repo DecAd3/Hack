@@ -1,6 +1,6 @@
 import javax.swing.JFrame;
 
-import debugPannel.MainPanel;
+import debugPanel.MainPanel;
 import service.ReworkService;
 
 public class Main {

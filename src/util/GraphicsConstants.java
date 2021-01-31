@@ -18,17 +18,17 @@ public class GraphicsConstants {
     public static int FLOOR_NUM = 10;
     public static int BAY_EACH_FLOOR_NUM = 100;
 
-    public static List<Floor> floors;
+    public static List<GraphicsFloor> floors;
 
     static {
         floors = new ArrayList<>();
         for (int i = 0; i < FLOOR_NUM; i++) {
-            Floor floor = new Floor(0, EACH_FLOOR_WIDTH, (i + 1) * EACH_FLOOR_HEIGHT);
+            GraphicsFloor floor = new GraphicsFloor(0, EACH_FLOOR_WIDTH, (i + 1) * EACH_FLOOR_HEIGHT);
             List<WorkBay> workBays = new ArrayList<>();
-            // 行
+            // row
             int num = 0;
             for (int j = 0; j < EACH_FLOOR_HEIGHT / (EACH_BAY_HEIGHT + EACH_EMPTY_HEIGHT); j++) {
-                // 列
+                // col
                 for (int k = 0; k < EACH_FLOOR_WIDTH / (EACH_BAY_WIDTH + EACH_EMPTY_WIDTH); k++) {
                     int x1 = EACH_EMPTY_WIDTH * (k + 1) + EACH_BAY_WIDTH * k;
                     int x2 = (EACH_EMPTY_WIDTH + EACH_BAY_WIDTH) * (k + 1);
@@ -91,13 +91,13 @@ public class GraphicsConstants {
         }
     }
 
-    public static class Floor {
+    public static class GraphicsFloor {
         int x1;
         int x2;
         int y1;
         List<WorkBay> workBayList;
 
-        public Floor(int x1, int x2, int y1) {
+        public GraphicsFloor(int x1, int x2, int y1) {
             this.x1 = x1;
             this.x2 = x2;
             this.y1 = y1;
