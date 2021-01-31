@@ -15,8 +15,13 @@ public class OutputPanel implements Runnable {
     private static Company company = Company.getInstance();
     private long WORLD_TIME = ReworkService.getInstance().getWorldTime();
 
+    private void checkWorldTime() {
+        if (WORLD_TIME != ReworkService.getInstance().getWorldTime())
+            data_info();
+    }
+
     public void data_info() {
-        WORLD_TIME = ReworkService.getInstance().getWorldTime();
+
         // Summary
         int OFFICE_AMOUNT = company.getEmployeePool().stream()
                 .filter(employee -> employee.getWorkStatus() == WORK_STATUS.WORKING).collect(Collectors.toList())
@@ -59,7 +64,7 @@ public class OutputPanel implements Runnable {
     class MyTimerTask extends TimerTask {
         @Override
         public void run() {
-            data_info();
+            checkWorldTime()
         }
     }
 
