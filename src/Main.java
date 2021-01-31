@@ -27,7 +27,7 @@ public class Main {
     private static void rework() {
         ReworkService reworkService = ReworkService.getInstance();
         try {
-            reworkService.rework(5);
+            reworkService.rework(10);
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -226,7 +226,7 @@ public class ReworkService {
                 if (WORLD_TIME % 48 == 0) {
                     info();
 
-                    // int healthyNum = checkAll();
+                    int healthyNum = checkAll();
                     try {
                         Thread.sleep(1000);
                         if ((WORLD_TIME / 6 / 8) == 30) {
